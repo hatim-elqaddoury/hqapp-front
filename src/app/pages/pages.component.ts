@@ -12,10 +12,15 @@ export class PagesComponent implements OnInit {
 
   MENU_ITEMS: NbMenuItem[] = [
     {
-      title: 'Tableau de Bord',
-      icon: 'nb-bar-chart',
+      title: 'Home',
+      icon: 'nb-home',
       link: '/pages/home',
       home: true,
+    },
+    {
+      title: 'Dashboard',
+      icon: 'nb-bar-chart',
+      link: '/pages/dashboard',
     },
     {
       title: 'Cv',

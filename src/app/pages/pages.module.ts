@@ -5,6 +5,7 @@ import { NbCardModule, NbLayoutModule, NbListModule, NbMenuModule, NbThemeModule
 import { HomeComponent } from './home/home.component';
 import { PagesComponent} from './pages.component';
 import {PagesRoutingModule} from './pages-routing.module';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 @NgModule({
@@ -12,6 +13,7 @@ import {PagesRoutingModule} from './pages-routing.module';
     PagesComponent,
     CvComponent,
     HomeComponent,
+    DashboardComponent,
   ],
   imports: [
     NbThemeModule,
