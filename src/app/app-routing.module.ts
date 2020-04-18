@@ -1,19 +1,39 @@
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { ExtraOptions, Routes, RouterModule } from '@angular/router';
+import {
+  NbAuthComponent,
+  NbLoginComponent,
+  NbLogoutComponent,
+  NbRegisterComponent,
+  NbRequestPasswordComponent,
+  NbResetPasswordComponent,
+} from '@nebular/auth';
 
 const routes: Routes = [
-  { path: 'pages', loadChildren: './pages/pages.module#PagesModule' },
-  { path: '', loadChildren: './pages/pages.module#PagesModule' },
+  {
+    path: 'app',
+    loadChildren: () => import('../app/pages/pages.module')
+      .then(m => m.PagesModule),
+  },
+  {
+    path: 'auth',
+    loadChildren: './auth/auth.module#HQAuthModule',
+  },
+  {
+    path: '',
+    loadChildren: () => import('../app/public/public.module')
+      .then(m => m.PublicModule),
+  },
+  { path: '**', redirectTo: 'app' },
 ];
-
 
 const config: ExtraOptions = {
   useHash: true,
 };
 
-
 @NgModule({
   imports: [RouterModule.forRoot(routes, config)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

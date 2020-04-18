@@ -1,40 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { NbMenuItem } from '@nebular/theme';
+import { Component } from '@angular/core';
+
+import { MENU_ITEMS } from './pages-menu';
 
 @Component({
-  selector: 'app-pages',
-  templateUrl: './pages.component.html',
-  styleUrls: ['./pages.component.scss']
+  selector: 'hq-pages',
+  styleUrls: ['pages.component.scss'],
+  template: `
+    <hq-one-column-layout>
+      <nb-menu [items]="menu"></nb-menu>
+      <router-outlet></router-outlet>
+    </hq-one-column-layout>
+  `,
 })
-export class PagesComponent implements OnInit {
-  menu:any;
+export class PagesComponent {
 
-
-  MENU_ITEMS: NbMenuItem[] = [
-    {
-      title: 'Home',
-      icon: 'nb-home',
-      link: '/pages/home',
-      home: true,
-    },
-    {
-      title: 'Dashboard',
-      icon: 'nb-bar-chart',
-      link: '/pages/dashboard',
-    },
-    {
-      title: 'Cv',
-      icon: 'nb-compose',
-      link: '/pages/cv',
-    },
-  ];
-
-
-  constructor() { }
-
-  ngOnInit() {
-    this.menu = this.MENU_ITEMS;
-  }
-
-
+  menu = MENU_ITEMS;
 }

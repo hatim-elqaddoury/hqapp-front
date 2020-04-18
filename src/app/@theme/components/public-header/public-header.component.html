@@ -1,0 +1,29 @@
+<div class="header-container">
+
+
+  <div class="logo-container">
+   <a class="logo" href="#" (click)="navigateHome()">HQ <span>app</span></a>
+  </div>
+
+</div>
+
+<div class="header-container">
+  <nb-actions size="medium">
+
+    <nb-action class="control-item">
+    </nb-action>
+
+
+    <nb-action *ngIf="currentTheme=='default'" (click)="changeTheme('dark')" class="control-item" >
+      <nb-icon nbTooltip="Dark mode" [options]="{ animation: { type: 'pulse' } }" nbTooltipPlacement="bottom" icon="moon-outline"></nb-icon>
+    </nb-action>
+
+    <nb-action *ngIf="currentTheme=='dark'" (click)="changeTheme('default')" class="control-item " >
+      <nb-icon nbTooltip="Light mode" [options]="{ animation: { type: 'pulse' } }" nbTooltipPlacement="bottom" icon="sun-outline"></nb-icon>
+    </nb-action>
+
+    <nb-action class="user-action" *nbIsGranted="['view', 'user']" >
+      <a class="link" (click)="GoTo('auth/login')">Login</a>
+    </nb-action>
+  </nb-actions>
+</div>

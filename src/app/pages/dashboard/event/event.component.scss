@@ -1,0 +1,48 @@
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+
+    nb-tab {
+      padding: 0;
+      //overflow: hidden; 
+      //overflow-y: auto;
+     // max-height: $card-height-large +(-3.4); //36.rem;
+          nb-card {
+            overflow: hidden;
+            padding: 0!important;
+          }
+
+    }
+
+    nb-user:hover{
+      cursor: pointer;
+    }
+
+  nb-tabset {
+    display: flex;
+    flex-direction: column;
+
+    ::ng-deep ul {
+      // make same size as card header
+      padding-bottom: 1px;
+      ::ng-deep .tab-link {
+        padding: 1.25rem 2rem;
+      }
+    }
+  }
+
+  .users {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &:first-child {
+      border-top: none;
+    }
+
+    &:last-child{
+      border-bottom: none;
+    }
+  }
+
+}

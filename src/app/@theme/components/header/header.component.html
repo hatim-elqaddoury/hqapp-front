@@ -1,0 +1,137 @@
+<div class="header-container">
+
+  <div class="logo-container">
+    <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
+      <nb-icon icon="menu-2"></nb-icon>
+    </a>
+    <a class="logo" href="#" (click)="navigateHome()">HQ <span>app</span></a>
+  </div>
+
+</div>
+
+
+<div class="header-container">
+  <nb-actions size="small" >
+
+    <!-- small screens sm break down-->
+    <nb-action class="small-control-item" nbTooltip="Search" nbTooltipPlacement="bottom">
+      <div class="icon-wrapper" [nbPopover]="search" nbPopoverPlacement="bottom" (click)="GoTo('search');">
+        <nb-icon icon="search" [options]="{ animation: { type: 'pulse' } }"></nb-icon>
+      </div>
+    </nb-action>
+
+    <nb-action class="small-control-item" nbTooltip="Messages" nbTooltipPlacement="bottom">
+      <div class="icon-wrapper" (click)="GoTo('messages')"
+        (click)="this.messagesCounter=null;">
+        <nb-icon icon="email-outline" [options]="{ animation: { type: 'pulse' } }"></nb-icon>
+        <span class="badge">{{messagesCounter}}</span>
+      </div>
+    </nb-action>
+
+    <nb-action class="small-control-item" nbTooltip="Notifications" nbTooltipPlacement="bottom" >
+      <div class="icon-wrapper" (click)="GoTo('notifications')"
+        (click)="this.notifsCounter=null;">
+        <nb-icon icon="bell-outline" [options]="{ animation: { type: 'pulse' } }"></nb-icon>
+        <span class="badge">{{notifsCounter}}</span>
+      </div>
+    </nb-action>
+
+    <nb-action class="small-control-item " >
+      <div class="icon-wrapper-user" [nbTooltip]="user?.name" nbTooltipPlacement="bottom" [nbPopover]="templateNotifsRef" >
+        <nb-user [onlyPicture]="userPictureOnly" [name]="user?.name" title="admin"
+          shape="semi-round" [picture]="user?.picture">
+        </nb-user>
+      </div>
+    </nb-action>
+
+    <!-- medium screens md go up-->
+    <nb-action class="medium-control-item"> <!-- [badgeText]="counter" badgeStatus="primary" -->
+      <div [nbPopover]="templateSearchRef" nbPopoverPlacement="bottom" nbPopoverTrigger="focus" >
+        <input class="input-field" shape="semi-round" type="text" size="60" fieldSize="medium" [(ngModel)]="searchValue" placeholder="Search..." nbInput>
+      </div> 
+    </nb-action>
+    <ng-template #templateSearchRef>
+      <nb-card accent="primary">
+        <nb-card-header *ngIf="recentSearches.length>0 || !searchValue" ><span>Recent Searches</span><span class="link"><a (click)="GoTo('search')">See all</a></span></nb-card-header>
+        <nb-card-header *ngIf="!recentSearches.length>0 && searchValue">
+          <span>Users <span *ngIf="(users | filter : searchValue).length>0">({{(users | filter : searchValue).length}})</span></span> 
+          <span class="link"><a (click)="GoTo('search')" >See all</a></span>
+        </nb-card-header>
+        <nb-card-body  [ngClass]="{'padding0': recentSearches.length>0 || (searchValue && (users | filter : searchValue).length>0) }" >
+          <span *ngIf="!recentSearches.length>0 && !searchValue">No recent searches</span>
+          <nb-list *ngIf="searchValue" style="overflow: hidden; overflow-y: auto;" >
+            <nb-list-item class="list-item-hovered" *ngFor="let u of (users | filter : searchValue)" (click)="GoTo('profile/'+u.idUser);">
+              <nb-user [picture]="u.avatar" [name]="u.prenom+' '+u.nom" [title]="u.role" size="medium"></nb-user>
+            </nb-list-item>
+          </nb-list>
+          <span *ngIf="!(users | filter : searchValue).length>0 && searchValue">No result found</span>
+        </nb-card-body>
+      </nb-card>
+    </ng-template>
+
+
+    <nb-action class="medium-control-item" nbTooltip="Messages" nbTooltipPlacement="bottom">
+      <div class="icon-wrapper" [nbPopover]="templateMailRef" nbPopoverPlacement="bottom" (click)="this.messagesCounter=null;">
+        <nb-icon icon="email-outline" [options]="{ animation: { type: 'pulse' } }" ></nb-icon>
+        <span class="badge">{{messagesCounter}}</span>
+      </div>
+    </nb-action> 
+    <ng-template #templateMailRef>
+      <nb-card accent="primary" >
+        <nb-card-header>
+          <span>Messages</span>
+          <span class="link" ><a (click)="GoTo('messages')">See all</a></span>
+        </nb-card-header>
+        <nb-card-body>
+          <span>testest</span>
+        </nb-card-body>
+      </nb-card>
+    </ng-template>
+
+
+    <nb-action  class="medium-control-item" nbTooltip="Notifications" nbTooltipPlacement="bottom"  NbTrigger="focus">
+      <div class="icon-wrapper" [nbPopover]="templateNotifsRef" nbPopoverPlacement="left" (click)="this.notifsCounter=null;">
+        <nb-icon icon="bell-outline" [options]="{ animation: { type: 'pulse' } }" ></nb-icon>
+        <span class="badge">{{notifsCounter}}</span>
+      </div>
+    </nb-action>
+    <ng-template #templateNotifsRef>
+        <nb-card accent="info" >
+          <nb-card-header><span class="font-weight-bold">Notifications</span><span class="link"><a (click)="GoTo('notifications')">See all</a></span></nb-card-header>
+            <!--parcours les notification en affichant notification.user.picture with notification.text and notification.date -->
+            <nb-card-body class="padding0">
+              <nb-list>
+                <nb-list-item class="list-item-hovered" *ngFor="let u of users.slice(0, 10) ">
+                  <nb-user [name]="u.prenom+' '+u.nom" [picture]="'https://i.picsum.photos/id/104/3840/2160.jpg'" 
+                   size="large" onlyPicture></nb-user>
+                  <span style="width: 70%;">
+                    <span > <a class="font-weight-bold link"  (click)="GoTo('profile/'+u.idUser)">{{u.prenom}} {{u.nom}} </a> liked your picture. </span>
+                    <span class="text-secondary" style="margin-top: 3px;  display: block;"> 2 days ago </span>
+                  </span>
+                  <span >
+                    <table width="100%" height="100%" style="margin: 0 auto;" valign="center">
+                      <tr>
+                        <td>
+                          <img [src]="urlimagetest" style="  max-height: 35px; width: 35px">
+                        </td>
+                      </tr>
+                    </table>
+                  </span>
+                </nb-list-item> 
+              </nb-list>
+            </nb-card-body>
+        </nb-card>
+    </ng-template>
+
+    <nb-action class="medium-control-item " *nbIsGranted="['view', 'user']" >
+      <div class="icon-wrapper-user">
+        <nb-user [nbContextMenu]="userMenu"
+                [onlyPicture]="userPictureOnly"
+                [name]="user?.name"
+                title="admin" shape="semi-round" 
+                [picture]="user?.picture" >
+        </nb-user>
+      </div>
+    </nb-action>
+  </nb-actions>
+</div>

@@ -1,0 +1,19 @@
+
+<div class="chat-container">
+    <nb-chat title="ChatBot" style="width: 100%; height: 440px"  status="secondary">
+        <nb-chat-message *ngFor="let msg of messages"
+                         [type]="msg.type"
+                         [message]="msg.text"
+                         [reply]="msg.reply"
+                         [sender]="msg.user.name"
+                         [date]="msg.date"
+                         [files]="msg.files"
+                         [quote]="msg.quote"
+                         [latitude]="msg.latitude"
+                         [longitude]="msg.longitude"
+                         [avatar]="msg.user.avatar">
+        </nb-chat-message>
+        <nb-chat-form (send)="sendMessage($event)" [dropFiles]="true">
+        </nb-chat-form>
+    </nb-chat>
+</div>

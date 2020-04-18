@@ -1,30 +1,72 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import {CvComponent} from './cv/cv.component';
-import {PagesComponent} from './pages.component';
-import {HomeComponent} from './home/home.component';
-import {DashboardComponent} from './dashboard/dashboard.component';
+
+import { PagesComponent } from './pages.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AccountComponent } from './settings/account/account.component';
+import { SearchComponent } from './search/search.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { MessagesComponent } from './messages/messages.component';
+import { PrivacyComponent } from './privacy/privacy.component';
+import { TermsComponent } from './terms/terms.component';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
   children: [
     {
-      path: 'home',
-      component: HomeComponent,
-    },
-    {
       path: 'dashboard',
       component: DashboardComponent,
     },
     {
-      path: 'cv',
-      component: CvComponent,
+      path: 'profile/:id',
+      component: ProfileComponent,
+    },
+    {
+      path: 'search',
+      component: SearchComponent,
+    },
+    {
+      path: 'notifications',
+      component: NotificationsComponent,
+    },
+    {
+      path: 'messages',
+      component: MessagesComponent,
+    },
+    {
+      path: 'setting/account',
+      component: AccountComponent,
+    },
+    {
+      path: 'privacy',
+      component: PrivacyComponent,
+    },
+    {
+      path: 'terms',
+      component: TermsComponent,
+    },
+    {
+      path: 'about',
+      component: AboutComponent,
+    },
+    {
+      path: 'miscellaneous',
+      loadChildren: () => import('./miscellaneous/miscellaneous.module')
+        .then(m => m.MiscellaneousModule),
+    },
+    {
+      path: '',
+      redirectTo: 'dashboard',
+      pathMatch: 'full',
     },
     {
       path: '**',
-      component: HomeComponent,
-    }
+      component: NotFoundComponent,
+    },
   ],
 }];
 
