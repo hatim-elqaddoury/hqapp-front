@@ -20,6 +20,7 @@ import {
   NbTooltipModule,
   NbInputModule,
   NbPlatformModule,
+  NbDialogModule,
 } from '@nebular/theme';
 import { NbSecurityModule } from '@nebular/security';
 
@@ -75,7 +76,8 @@ const NB_MODULES = [
   NbEvaIconsModule,
   NbTooltipModule,
   NbInputModule,
-  NbPlatformModule
+  NbPlatformModule, 
+  NbDialogModule.forChild(),
 ];
 const COMPONENTS = [
   HeaderComponent,

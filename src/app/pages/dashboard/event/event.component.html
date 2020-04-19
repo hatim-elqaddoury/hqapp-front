@@ -1,18 +1,15 @@
-<nb-card>
+<nb-card [size]="'large'">
   <nb-tabset fullWidth>
     <nb-tab [tabTitle]="'Users ('+users.slice(0, 10).length+')'">
-      <nb-card [size]="'large'">
         <nb-list style="overflow: hidden; overflow-y: auto;">
           <nb-list-item class="users" *ngFor="let u of users.slice(0, 10) ">
             <nb-user [picture]="" [name]="u.prenom+' '+u.nom" [title]="u.role" size="large"></nb-user>
               <div class="users">
-                <nb-icon icon="award-outline" pack="eva" style="cursor: pointer;"></nb-icon>
+                <nb-icon icon="award-outline" pack="eva" style="cursor: pointer;" [options]="{ animation: { type: 'shake' } }"></nb-icon>
               </div>
           </nb-list-item>
         </nb-list>
-      </nb-card>  
     </nb-tab>
-
     <nb-tab [tabTitle]="'others '">
       <nb-card [size]="'large'">
         <p> empty for now.</p>

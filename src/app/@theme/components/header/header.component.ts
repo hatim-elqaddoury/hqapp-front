@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService, NbPopoverDirective } from '@nebular/theme';
+import { Component, OnDestroy, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService, NbPopoverDirective, NbDialogService } from '@nebular/theme';
 
 import { UserData } from '../../../@core/data/users';
 import { LayoutService, AdminService } from '../../../@core/utils';
@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   urlimagetest: any = "https://i.picsum.photos/id/339/200/200.jpg";
 
   // par utilisateurs connecté, 10 max.
-  recentSearches = [ ]; 
+  recentSearches = [ {}]; 
 
   userMenu = [
     { title: 'Profile', icon: 'person-outline', link: '/app/profile/'+'curentuseerid' }, 
@@ -40,11 +40,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   @ViewChild(NbPopoverDirective, { static: false }) popover: NbPopoverDirective;
 
-  open(): any {
+  openP(): any {
     this.popover.show();
   }
 
-  close(): any {
+  closeP(): any {
     this.popover.hide();
   }
 
@@ -55,11 +55,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService,
               private adminS: AdminService,
-              private router: Router) {
+              private router: Router, 
+              private dialogService: NbDialogService) {
+  }
+
+
+  openD(dialog: TemplateRef<any>) {
+    this.dialogService.open( 
+      dialog,
+      {
+        context: 'this is some additional data passed to dialog',
+        hasBackdrop: true, 
+        closeOnBackdropClick: true, 
+        closeOnEsc: true,
+        autoFocus: false,
+      }
+    ).onClose.subscribe(v => console.log(v));
   }
 
   ngOnInit() {
-
     this.subUsers =  this.adminS.getUsers().subscribe(res => {
       this.users = res;
       this.notifsCounter = this.users.slice(0, 10).length;
@@ -85,13 +99,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((c: any) => this.usertitle = c.type);
 
+    let collapsesub: any;
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
       .pipe(
         map(([, currentBreakpoint]) => currentBreakpoint.width < xl),
         takeUntil(this.destroy$),
       )
-      .subscribe((isLessThanXl: boolean) => this.userPictureOnly = isLessThanXl);
+      .subscribe((v: boolean) => {
+        if (v) collapsesub = this.menuService.onItemClick().subscribe((e) => { this.sidebarService.toggle(v, 'menu-sidebar') });
+        this.userPictureOnly = v; 
+      });
 
     this.themeService.onThemeChange()
       .pipe(
@@ -102,6 +120,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
     this.menuService.onItemClick().subscribe((event) => {
+      
+      //this.sidebarService.collapse('menu-sidebar');
       
       if (event.item.title === 'Dark mode' || event.item.title === 'Light mode'  ) {
         
@@ -116,7 +136,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       } else if (event.item.title === 'Log out') {
         console.log('logout clicked');
       }else{
-        console.log("item not recognised");
+        console.log('logout clicked ---');
       }
 
     });
@@ -125,8 +145,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   GoTo(url: string): any {
     this.router.navigateByUrl("/app/" + url);
-    this.subUsers.unsubscribe(); 
+    this.subUsers.unsubscribe();
     this.searchValue = null;
+    event.stopPropagation();
+    this.closeP(); // why it doesnt work
+  }
+
+  GoToUsrMenu(m: any): any {
+    if(m.title.match('Dark mode') || m.title.match('Light mode')){
+      if (this.currentTheme == 'dark') {
+        this.changeTheme('default');
+      } else if (this.currentTheme == 'default') {
+        this.changeTheme('dark');
+      }
+    }else{
+      this.router.navigateByUrl( m.link);
+      this.searchValue = null;
+    }
+    event.stopPropagation();
+    
   }
 
 
@@ -134,6 +171,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
     this.subUsers.unsubscribe();
+    this.sidebarService.collapse('menu-sidebar');
   }
 
   changeTheme(themeName: string) {

@@ -14,35 +14,48 @@
   <nb-actions size="small" >
 
     <!-- small screens sm break down-->
-    <nb-action class="small-control-item" nbTooltip="Search" nbTooltipPlacement="bottom">
-      <div class="icon-wrapper" [nbPopover]="search" nbPopoverPlacement="bottom" (click)="GoTo('search');">
+    <nb-action class="small-control-item"(click)="GoTo('search');" nbTooltip="Search" nbTooltipPlacement="bottom">
+      <div class="icon-wrapper" [nbPopover]="search" nbPopoverPlacement="bottom" >
         <nb-icon icon="search" [options]="{ animation: { type: 'pulse' } }"></nb-icon>
       </div>
     </nb-action>
 
-    <nb-action class="small-control-item" nbTooltip="Messages" nbTooltipPlacement="bottom">
-      <div class="icon-wrapper" (click)="GoTo('messages')"
-        (click)="this.messagesCounter=null;">
+    <nb-action class="small-control-item" (click)="GoTo('messages'); this.messagesCounter=null;" nbTooltip="Messages" nbTooltipPlacement="bottom">
+      <div class="icon-wrapper">
         <nb-icon icon="email-outline" [options]="{ animation: { type: 'pulse' } }"></nb-icon>
         <span class="badge">{{messagesCounter}}</span>
       </div>
     </nb-action>
 
-    <nb-action class="small-control-item" nbTooltip="Notifications" nbTooltipPlacement="bottom" >
-      <div class="icon-wrapper" (click)="GoTo('notifications')"
-        (click)="this.notifsCounter=null;">
+    <nb-action class="small-control-item" (click)="GoTo('notifications'); this.notifsCounter=null;" nbTooltip="Notifications" nbTooltipPlacement="bottom" >
+      <div class="icon-wrapper">
         <nb-icon icon="bell-outline" [options]="{ animation: { type: 'pulse' } }"></nb-icon>
         <span class="badge">{{notifsCounter}}</span>
       </div>
     </nb-action>
 
-    <nb-action class="small-control-item " >
+    <nb-action class="small-control-item" (click)="openD(dialogUserMenu)">
       <div class="icon-wrapper-user" [nbTooltip]="user?.name" nbTooltipPlacement="bottom" [nbPopover]="templateNotifsRef" >
         <nb-user [onlyPicture]="userPictureOnly" [name]="user?.name" title="admin"
           shape="semi-round" [picture]="user?.picture">
         </nb-user>
       </div>
     </nb-action>
+    
+    <ng-template #dialogUserMenu let-data let-ref="dialogRef">
+      <nb-card>
+        <nb-card-header>Menu <nb-icon size="tiny" (click)="ref.close()" icon="close"></nb-icon> </nb-card-header>
+        <nb-card-body class="padding0">
+          <nb-list>
+            <nb-list-item class="list-item-hovered" style="justify-content: left!important;" *ngFor="let m of userMenu" (click)="GoToUsrMenu(m);ref.close();">
+               <nb-icon style="margin-left: .5em;" [icon]="m.icon"></nb-icon> 
+               <span style="margin-left: 1em;">{{m.title}}</span>
+            </nb-list-item>
+          </nb-list>
+        </nb-card-body>
+      </nb-card>
+    </ng-template>
+
 
     <!-- medium screens md go up-->
     <nb-action class="medium-control-item"> <!-- [badgeText]="counter" badgeStatus="primary" -->
@@ -52,20 +65,33 @@
     </nb-action>
     <ng-template #templateSearchRef>
       <nb-card accent="primary">
-        <nb-card-header *ngIf="recentSearches.length>0 || !searchValue" ><span>Recent Searches</span><span class="link"><a (click)="GoTo('search')">See all</a></span></nb-card-header>
+       
+        <nb-card-header *ngIf="recentSearches.length>0 || !searchValue" >
+          <span>Recent Searches</span><span class="link">
+          <a (click)="GoTo('search')">See all</a></span></nb-card-header>
         <nb-card-header *ngIf="!recentSearches.length>0 && searchValue">
           <span>Users <span *ngIf="(users | filter : searchValue).length>0">({{(users | filter : searchValue).length}})</span></span> 
           <span class="link"><a (click)="GoTo('search')" >See all</a></span>
         </nb-card-header>
-        <nb-card-body  [ngClass]="{'padding0': recentSearches.length>0 || (searchValue && (users | filter : searchValue).length>0) }" >
+
+        <nb-card-body [ngClass]="{'padding0': (recentSearches.length>0 && !searchValue) || (searchValue && (users | filter : searchValue).length>0) }" >
           <span *ngIf="!recentSearches.length>0 && !searchValue">No recent searches</span>
+          <span *ngIf="recentSearches.length>0 && !searchValue">
+            <nb-list> 
+              <nb-list-item class="list-item-hovered" *ngFor="let u of (users.slice(0, 3))" (click)="GoTo('profile/'+u.idUser);">
+                <nb-user [picture]="u.avatar" [name]="u.prenom+' '+u.nom" [title]="u.role" size="medium"></nb-user>
+                <nb-icon (click)="GoTo('profile/'+u.idUser+'/mseh');"icon="close"></nb-icon>
+              </nb-list-item>
+            </nb-list>
+          </span>
           <nb-list *ngIf="searchValue" style="overflow: hidden; overflow-y: auto;" >
             <nb-list-item class="list-item-hovered" *ngFor="let u of (users | filter : searchValue)" (click)="GoTo('profile/'+u.idUser);">
               <nb-user [picture]="u.avatar" [name]="u.prenom+' '+u.nom" [title]="u.role" size="medium"></nb-user>
             </nb-list-item>
           </nb-list>
-          <span *ngIf="!(users | filter : searchValue).length>0 && searchValue">No result found</span>
+          <span  *ngIf="!(users | filter : searchValue).length>0 && searchValue">No result found</span>
         </nb-card-body>
+
       </nb-card>
     </ng-template>
 
@@ -95,9 +121,9 @@
         <span class="badge">{{notifsCounter}}</span>
       </div>
     </nb-action>
-    <ng-template #templateNotifsRef>
+    <ng-template #templateNotifsRef let-ref="notifRef">
         <nb-card accent="info" >
-          <nb-card-header><span class="font-weight-bold">Notifications</span><span class="link"><a (click)="GoTo('notifications')">See all</a></span></nb-card-header>
+          <nb-card-header><span class="font-weight-bold">Notifications</span><span class="link"><a (click)="GoTo('notifications');closeP();">See all</a></span></nb-card-header>
             <!--parcours les notification en affichant notification.user.picture with notification.text and notification.date -->
             <nb-card-body class="padding0">
               <nb-list>

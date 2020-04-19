@@ -17,11 +17,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'lock-outline',
     children: [
       {
-        title: 'general',
-        icon: 'person-outline',
-        link: '/app/setting/general',
-      },
-      {
         title: 'account',
         icon: 'person-outline',
         link: '/app/setting/account',

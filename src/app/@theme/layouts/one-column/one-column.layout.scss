@@ -9,14 +9,15 @@
   }
 
   nb-sidebar{
-    &.compacted {
+    &.compacted, &.collapsed{
       .footer {
         display: none;
       }
     }
   }
+
   
-.footer {
+  .footer {
     position: fixed;
     left: 0;
     bottom: 0;
@@ -27,9 +28,11 @@
     opacity: 0.6;
     width: 100%;
     justify-content: space-between;
+
+    &:hover{
+      opacity: 0.8;
+    }
+
   }
 
-.footer:hover {
-    opacity: 0.8;
-  }
 }
