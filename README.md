@@ -1,1 +1,1 @@
-HQ-App Description.
+# HQ-App Description.
