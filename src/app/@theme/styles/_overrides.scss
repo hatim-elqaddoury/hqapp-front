@@ -1,6 +1,7 @@
 @import './themes';
 
 @mixin nb-overrides() {
+
   // overrides bootstrap svg style
   nb-icon svg {
     vertical-align: top;
