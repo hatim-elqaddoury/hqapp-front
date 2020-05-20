@@ -1,7 +1,10 @@
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { AdminService } from '../../@core/utils';
 import { filter } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
+import { title } from '../../@core/mock/conf';
 
 @Component({
   selector: 'hq-profile',
@@ -10,30 +13,88 @@ import { filter } from 'rxjs/operators';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private router: Router, private adminS: AdminService) {
-  }
+  private selectedFile: File;
+  user: any;
+  private subUsers: any;
 
-  private user: any;
-  private id: any;
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router, 
+    private adminS: AdminService,
+    private titleService: Title) {
+    //Gets the idUSer from the url paramaeters.
 
-  ngOnInit() {
-
-    let idUser = this.route.snapshot.params.id;
-    this.getUser(idUser);
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-      idUser = this.route.snapshot.params.id; 
+      let idUser: any = this.route.snapshot.params.id;
       this.getUser(idUser);
+    }, err => {
+      console.log(err);
     });
   }
 
+
+  ngOnInit() {
+   // console.log(this.user);
+    
+  }
+
+  //Gets the the user to show its profile.
   getUser(id: String):any{
-    if (id == null || id == undefined) /* id = CurrentUSer.id id = "first"; this.router.navigateByUrl("/app/dashboard");*/  console.log("not found");
-    else this.adminS.getUser(id).subscribe(res => { this.user = res; });
+    if (!id) this.user = "notfound";
+    else this.subUsers =this.adminS.getUser(id).subscribe(
+    (res:any) => {
+      this.user = res;
+      if (!this.user) this.user = "notfound";
+      else this.titleService.setTitle(this.user.fullname + "・" + title.value);
+      return this.user;
+    }, 
+    (err:any)=>{
+        this.user = "notfound";
+        return this.user;
+    });
+    return this.user;
+  }
+  
+
+  //Gets called when the user selects an image
+  public onFileChanged(event) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  //Gets called when the user clicks on submit to upload the image
+  onUpload() {
+    console.log(this.selectedFile);
+    const uploadImageData = new FormData();
+    uploadImageData.append('imageFile', this.selectedFile, this.user.idUser);
+    
+    this.adminS.updateUserAvatar(uploadImageData).subscribe(res=>{
+      this.user = res;
+    });
+
   }
 
 
+  //Gets called when the user clicks on retieve image button to get the image from back end
+  /*getImage() {
+    //Make a call to Sprinf Boot to get the Image Bytes.
+    this.httpClient.get(this.server + 'image/get/' + this.imageName, { headers: { 'HQ-authorise': this.authS.getToken() } })
+      .subscribe(
+        res => {
+          this.retrieveResonse = res;
+          this.base64Data = this.retrieveResonse.picByte;
+          this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
+        }
+      );
+  }*/
+
+
   ngOnDestroy() {
+    console.log(title.value);
+    
+    this.titleService.setTitle(title.value);
+    this.subUsers.unsubscribe();
+    
   }
 }

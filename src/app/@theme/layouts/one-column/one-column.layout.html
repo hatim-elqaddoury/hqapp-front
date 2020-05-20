@@ -1,0 +1,20 @@
+<nb-layout windowMode>
+    <nb-layout-header fixed>
+        <hq-header></hq-header>
+    </nb-layout-header>
+
+    <nb-sidebar class="online-users" collapsedBreakpoints="['xs', 'is', 'sm', 'md', 'lg']" right tag="onlineUsers"
+        state="collapsed" responsive>
+        <hq-online-users></hq-online-users>
+    </nb-sidebar>
+
+    <nb-sidebar class="menu-sidebar" tag="menu-sidebar" responsive>
+        <ng-content select="nb-menu"></ng-content>
+        <hq-footer class="footer"></hq-footer>
+    </nb-sidebar>
+
+    <nb-layout-column>
+        <ng-content select="router-outlet"></ng-content>
+    </nb-layout-column>
+
+</nb-layout>

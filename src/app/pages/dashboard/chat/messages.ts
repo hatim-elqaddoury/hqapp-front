@@ -1,4 +1,4 @@
-const name:any = "Hatim Q-Bot";
+const name: any = "Hatim Q-Bot";
 
 
 export const messages = [];

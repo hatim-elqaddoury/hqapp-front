@@ -1,6 +1,6 @@
 
 <div class="chat-container">
-    <nb-chat title="ChatBot" style="width: 100%; height: 440px"  status="secondary">
+    <nb-chat title="ChatBot" size="medium" status="secondary">
         <nb-chat-message *ngFor="let msg of messages"
                          [type]="msg.type"
                          [message]="msg.text"

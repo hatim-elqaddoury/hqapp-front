@@ -20,6 +20,7 @@ import { ContactsComponent } from './contacts/contacts.component';
 import { FormsModule } from '@angular/forms';
 import {ChatComponent} from "./chat/chat.component";
 import { EventComponent } from './event/event.component';
+import { ImageComponent } from './image/image.component';
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import { EventComponent } from './event/event.component';
     ContactsComponent,
     ChatComponent,
     EventComponent,
+    ImageComponent,
   ],
 })
 export class DashboardModule { }

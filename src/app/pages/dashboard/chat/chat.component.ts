@@ -32,8 +32,8 @@ export class ChatComponent {
       type: files.length ? 'file' : 'text',
       files: files,
       user: {
-        name: 'Hatim El-Qaddoury',
-        avatar: 'https://i.gifer.com/no.gif',
+        name: 'Hatim El-Qaddoury (current user)',
+        avatar: 'https://miro.medium.com/max/1400/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
       },
     });
     const botReply = this.chatService.reply(event.message);

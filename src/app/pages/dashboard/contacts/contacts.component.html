@@ -1,11 +1,11 @@
-<nb-card size="large">
+<nb-card>
   <nb-tabset fullWidth>
 
     <nb-tab tabTitle="Contacts">
       <nb-list>
-        <nb-list-item class="contact" *ngFor="let c of contacts">
-          <nb-user [picture]="c.user.picture" [name]="c.user.name" [title]="c.type" size="large"></nb-user>
-          <a href="tel:+33769005557"><nb-icon icon="phone-outline" pack="eva" [options]="{ animation: { type: 'pulse' } }"></nb-icon></a>
+        <nb-list-item class="contact" *ngFor="let c of users">
+          <nb-user [picture]="c.avatar" [name]="c.fullname" [title]="c.role" size="large"></nb-user>
+          <a [href]="'tel:'+c.phone"><nb-icon icon="phone-outline" pack="eva" [options]="{ animation: { type: 'pulse' } }"></nb-icon></a>
           
           
         </nb-list-item>
@@ -14,12 +14,31 @@
 
     <nb-tab tabTitle="Recent">
       <nb-list>
-        <nb-list-item class="contact" *ngFor="let c of recent">
-          <nb-user [picture]="c.user.picture" [name]="c.user.name" [title]="c.type" size="large"></nb-user>
-          <span class="caption">{{ c.time | date: 'shortTime' }}</span>
+        <nb-list-item class="contact" *ngFor="let c of users">
+          <nb-user [picture]="c.avatar" [name]="c.fullname" [title]="c.role" size="large"></nb-user>
+          <span class="caption">{{ time | date: 'shortTime' }}</span>
         </nb-list-item>
       </nb-list>
     </nb-tab>
 
+  <nb-tab tabTitle="cards">
+    <span class="space-around" >
+      <span></span>
+      <span *ngFor="let u of users">
+        <figure [style.background-image]="'https://images.pexels.com/photos/1368382/pexels-photo-1368382.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'">
+          <div class="date"><span class="card-date-day">{{ time | date:'dd'}}</span><span class="card-date-month">{{ time | date:'MMMM'}}</span></div>
+          <figcaption>
+            <h4> <span>{{u.fullname}}</span></h4>
+            <p>The magic Indian is a mysterious spiritual force, and we're going to Cathedral Rock, and that's the vortex of
+              the heart.</p>
+          </figcaption>
+        </figure>
+      </span>
+      <span></span>
+    </span>
+  </nb-tab>
+
+
   </nb-tabset>
 </nb-card>
+

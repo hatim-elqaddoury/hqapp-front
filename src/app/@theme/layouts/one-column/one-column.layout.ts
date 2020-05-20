@@ -1,29 +1,14 @@
 import { AfterViewInit, Component, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { NbLayoutComponent } from '@nebular/theme';
+import { NbLayoutComponent, NbSidebarService } from '@nebular/theme';
 
 import { WindowModeBlockScrollService } from '../../services/window-mode-block-scroll.service';
+import { LayoutService } from '../../../@core/utils';
 
 @Component({
   selector: 'hq-one-column-layout',
   styleUrls: ['./one-column.layout.scss'],
-  template: `
-    <nb-layout windowMode>
-      <nb-layout-header fixed>
-        <hq-header></hq-header>
-      </nb-layout-header>
-
-      <nb-sidebar class="menu-sidebar" tag="menu-sidebar" responsive>
-        <ng-content select="nb-menu"></ng-content>
-        <hq-footer class="footer"></hq-footer>
-      </nb-sidebar>
-
-      <nb-layout-column>
-        <ng-content select="router-outlet"></ng-content>
-      </nb-layout-column>
-
-    </nb-layout>
-  `,
+  templateUrl: `./one-column.layout.html`,
 })
 export class OneColumnLayoutComponent implements AfterViewInit {
 
@@ -32,11 +17,18 @@ export class OneColumnLayoutComponent implements AfterViewInit {
   constructor(
     @Inject(PLATFORM_ID) private platformId,
     private windowModeBlockScrollService: WindowModeBlockScrollService,
+    private sidebarService: NbSidebarService,
+    private layoutService: LayoutService,
   ) {}
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.windowModeBlockScrollService.register(this.layout);
     }
+  }
+  toggleOnlineUsersBar() {
+    this.sidebarService.toggle(false, 'onlineUsers');
+    this.layoutService.changeLayoutSize();
+    return false;
   }
 }

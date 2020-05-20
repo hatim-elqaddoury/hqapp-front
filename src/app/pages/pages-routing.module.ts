@@ -9,9 +9,7 @@ import { AccountComponent } from './settings/account/account.component';
 import { SearchComponent } from './search/search.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { MessagesComponent } from './messages/messages.component';
-import { PrivacyComponent } from './privacy/privacy.component';
-import { TermsComponent } from './terms/terms.component';
-import { AboutComponent } from './about/about.component';
+import { PrivacyComponent, TermsComponent, AboutComponent } from '../@theme/components';
 
 const routes: Routes = [{
   path: '',

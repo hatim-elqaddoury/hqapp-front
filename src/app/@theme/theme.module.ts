@@ -21,6 +21,8 @@ import {
   NbInputModule,
   NbPlatformModule,
   NbDialogModule,
+  NbBadgeModule,
+  NbChatModule,
 } from '@nebular/theme';
 import { NbSecurityModule } from '@nebular/security';
 
@@ -31,6 +33,10 @@ import {
   TinyMCEComponent,
   PublicHeaderComponent,
   PublicFooterComponent,
+  ChatComponent,
+  AboutComponent,
+  PrivacyComponent,
+  TermsComponent,
 } from './components';
 import {
   CapitalizePipe,
@@ -38,6 +44,7 @@ import {
   RoundPipe,
   TimingPipe,
   NumberWithCommasPipe,
+  SearchPipe,
 } from './pipes';
 import {
   OneColumnLayoutComponent,
@@ -51,6 +58,7 @@ import { DARK_THEME } from './styles/theme.dark';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { FormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { OnlineUsersComponent } from './components/online-users/online-users.component';
 
 const ANG_MODULES = [
   FormsModule,
@@ -75,8 +83,10 @@ const NB_MODULES = [
   NbAccordionModule,
   NbEvaIconsModule,
   NbTooltipModule,
+  NbBadgeModule,
   NbInputModule,
-  NbPlatformModule, 
+  NbPlatformModule,
+  NbChatModule,
   NbDialogModule.forChild(),
 ];
 const COMPONENTS = [
@@ -84,19 +94,25 @@ const COMPONENTS = [
   PublicHeaderComponent,
   FooterComponent,
   PublicFooterComponent,
+  ChatComponent,
+  AboutComponent,
+  PrivacyComponent,
+  TermsComponent,
   SearchInputComponent,
   TinyMCEComponent,
   OneColumnLayoutComponent,
   PublicOneColumnLayoutComponent,
   ThreeColumnsLayoutComponent,
-  TwoColumnsLayoutComponent,
+  TwoColumnsLayoutComponent, 
+  OnlineUsersComponent,
 ];
 const PIPES = [
   CapitalizePipe,
   PluralPipe,
   RoundPipe,
   TimingPipe,
-  NumberWithCommasPipe,
+  NumberWithCommasPipe, 
+  SearchPipe
 ];
 
 @NgModule({

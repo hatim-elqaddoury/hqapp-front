@@ -3,7 +3,61 @@
 @import '~@nebular/theme/styles/global/breakpoints';
 
 @include nb-install-component() {
+
   .menu-sidebar ::ng-deep .scrollable {
     padding-top: nb-theme(layout-padding-top);
   }
+
+  .messsageBox{
+    position: absolute;
+    bottom: 160px;
+    right: 25px;
+  }
+
+  hq-chatbot{
+    background-color: green!important;
+    padding: 0;
+  }
+
+  #chatbotButton {
+    cursor: pointer;
+    border-radius: 15px;
+    position: absolute;
+    bottom: 90px;
+    right: 20px;
+    &:focus{
+      .ion{
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+        -webkit-transition-duration: 0.2s;
+        -moz-transition-duration: 0.2s;
+        -o-transition-duration: 0.2s;
+        transition-duration: 0.2s;
+      }
+    }
+  }
+
+
+    @include media-breakpoint-down(sm) {
+      .small-control-item{
+        display: block;
+      }
+      .medium-control-item {
+        display: none;
+        border: none;
+      }
+    }
+
+    @include media-breakpoint-up(md) {
+     .small-control-item {
+        display: none;
+        border: none;
+      }
+      .medium-control-item {
+        display: block;
+      }
+    }
+
 }

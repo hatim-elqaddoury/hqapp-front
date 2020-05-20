@@ -11,21 +11,15 @@ import {
     LayoutService,
     PlayerService,
     StateService,
+    AuthGuard,
 } from './utils';
-import { UserData } from './data/users';
-import { UserActivityData } from './data/user-activity';
 
-import { UserService } from './mock/users.service';
-import { UserActivityService } from './mock/user-activity.service';
 import { MockDataModule } from './mock/mock-data.module';
 
 const socialLinks = [
 ];
 
-const DATA_SERVICES = [
-  { provide: UserData, useClass: UserService },
-  { provide: UserActivityData, useClass: UserActivityService },
-];
+const DATA_SERVICES = [];
 
 export class NbSimpleRoleProvider extends NbRoleProvider {
   getRole() {
@@ -77,6 +71,7 @@ export const NB_CORE_PROVIDERS = [
   PlayerService,
   StateService,
   AdminService,
+  AuthGuard, 
 ];
 
 @NgModule({

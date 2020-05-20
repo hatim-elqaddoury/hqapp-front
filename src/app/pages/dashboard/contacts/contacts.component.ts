@@ -12,28 +12,20 @@ import {AdminService} from "../../../@core/utils";
 })
 export class ContactsComponent implements OnDestroy {
 
-  private alive = true;
 
-  contacts: any[];
-  recent: any[];
-  users: any[];
+  users: any;
+  subUsers:any;
+  time: Date = new Date();
 
-  constructor(private userService: UserData, private adminS : AdminService) {
-    forkJoin(
-      this.userService.getContacts(),
-      this.userService.getRecentUsers(),
-    )
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(([contacts, recent]: [Contacts[], RecentUsers[]]) => {
-        this.contacts = contacts;
-        this.recent = recent;
-      });
-
-    this.adminS.getUsers();
+  constructor( private adminS : AdminService) {
+    this.subUsers = this.adminS.getUsers().subscribe(res=>{
+      this.users = res;
+    }, (err: any)=>{
+      //console.log(err);
+    });
   }
 
   ngOnDestroy() {
-    this.alive = false;
   }
 
 

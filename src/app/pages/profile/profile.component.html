@@ -1,33 +1,158 @@
-<nb-card *ngIf="user != undefined">
-    <nb-card-header>
+<span  class="center">
+    <nb-card *ngIf="user && user!='notfound'" class="profile-card" >
+        <nb-card-header>
+            <!--../../../assets/images/hatim.png-->
+            <div class="profile-card__img">
+                <img [src]="user.avatar"   
+                    alt="profile picture">
+            </div>
 
-        <span>
-            <p class="text-bold"> {{user.prenom}} {{user.nom}} </p>
-        </span>
+            <div class="profile-card__cnt">
+                <div class="profile-card__name">{{user.fullname}}</div>
+                <div class="profile-card__txt">
+                    <span class="bio"> 
+                    Front-end Developer fromFront-end Developer fromFront-end Developer fromFront-end Developer fromFront-end Developer fromFront-end Developer fromFront-end Developer from (<strong>{{user.role}}</strong>)
+                    </span>
+                </div>
+                
+               <!-- 
+                <div class="profile-card-loc">
+                    <span class="profile-card-loc__icon">
+                        <span class="icon-font">
+                            <i class="icon ion ion-location"></i>
+                        </span>
+                    </span>
+                
+                    <span class="profile-card-loc__txt">
+                        Dijon, France
+                    </span>
+                
+                </div>
+                -->
 
-        <span class="icons">
+                <div class="profile-card-inf">
+                    <div class="profile-card-inf__item">
+                        <div class="profile-card-inf__title">1598</div>
+                        <div class="profile-card-inf__txt"><a class="link">Followers</a></div>
+                    </div>
 
-            <nb-icon icon="star" [options]="{ animation: { type: 'pulse' } }"></nb-icon> <!-- zoom shake pulse flip -->
-            
-            <nb-icon icon="cube" [options]="{ animation: { type: 'pulse' } }"></nb-icon> <!-- zoom shake pulse flip -->
-            
-            <nb-icon icon="clock" [options]="{ animation: { type: 'pulse' } }"></nb-icon> <!-- zoom shake pulse flip -->
-            
-            <nb-icon icon="camera" [options]="{ animation: { type: 'pulse' } }"></nb-icon> <!-- zoom shake pulse flip -->
-            
-            <nb-icon icon="globe-2" [options]="{ animation: { type: 'pulse' } }"></nb-icon> <!-- zoom shake pulse flip -->
-            
-            <nb-icon icon="linkedin" [options]="{ animation: { type: 'pulse' } }"></nb-icon> <!-- zoom shake pulse flip -->
-            
-            <nb-icon icon="image" [options]="{ animation: { type: 'pulse' } }"></nb-icon> <!-- zoom shake pulse flip -->
-            
-            <nb-icon icon="image-2" [options]="{ animation: { type: 'pulse' } }"></nb-icon> <!-- zoom shake pulse flip -->
+                    <div class="profile-card-inf__item">
+                        <div class="profile-card-inf__title">65</div>
+                        <div class="profile-card-inf__txt"><a class="link">Following</a></div>
+                    </div>
 
-        </span>
+                    <div class="profile-card-inf__item">
+                        <div class="profile-card-inf__title">123</div>
+                        <div class="profile-card-inf__txt"><a class="link">Articles</a></div>
+                    </div>
 
-    </nb-card-header>
-    <nb-card-body>
+                    <div class="profile-card-inf__item">
+                        <div class="profile-card-inf__title">85</div>
+                        <div class="profile-card-inf__txt"><a class="link">Works</a></div>
+                    </div>
+                </div>
 
+                <div class="profile-card-social">
+                    <a href="https://www.facebook.com/iaMuhammedErdem" class="profile-card-social__item facebook" target="_blank">
+                        <span class="icon-font">
+                            <i class="ion ion-social-facebook"></i>
+                        </span>
+                    </a>
 
-    </nb-card-body>
-</nb-card>
+                    <a href="https://twitter.com/iaMuhammedErdem" class="profile-card-social__item twitter" target="_blank">
+                        <span class="icon-font">
+                            <i class="icon ion ion-social-twitter"></i>
+                        </span>
+                    </a>
+
+                    <a href="https://www.instagram.com/iamuhammederdem" class="profile-card-social__item instagram"
+                        target="_blank">
+                        <span class="icon-font">
+                            <i class="icon ion ion-social-instagram"></i>
+                        </span>
+                    </a>
+
+                    <a href="https://www.behance.net/iaMuhammedErdem" class="profile-card-social__item behance"
+                        target="_blank">
+                        <span class="icon">
+                            <i class="icon ion ion-social-facebook"></i>
+                        </span>
+                    </a>
+
+                    <a href="https://github.com/muhammederdem" class="profile-card-social__item github" target="_blank">
+                        <span class="icon-font">
+                            <i class="icon ion ion-social-github"></i>
+                        </span>
+                    </a>
+
+                </div>
+
+                <!--
+                <div class="profile-card-ctr">
+                    <button class="profile-card__button button--blue js-message-btn">Message</button>
+                    <button class="profile-card__button button--orange">Follow</button>
+                </div>-->
+            </div>
+
+            <div class="profile-card-message js-message">
+                <form class="profile-card-form">
+                    <div class="profile-card-form__container">
+                        <textarea placeholder="Say something..."></textarea>
+                    </div>
+
+                    <div class="profile-card-form__bottom">
+                        <button class="profile-card__button button--blue js-message-close">
+                            Send
+                        </button>
+
+                        <button class="profile-card__button button--gray js-message-close">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+
+                <div class="profile-card__overlay js-message-close"></div>
+            </div>
+        </nb-card-header>
+        
+        <nb-card-body class="space-between">
+            tabs with settings too to
+        
+            <span>
+                <div class="col-md-6">
+                    <br />
+                    <input type="file" (change)="onFileChanged($event)" />
+                    <input type="button" (click)="onUpload()" value="Upload file">
+                </div>
+            </span>
+        
+            <span class="icons">
+        
+                <nb-icon icon="star" [options]="{ animation: { type: 'zoom' } }"></nb-icon> <!-- zoom shake pulse flip -->
+        
+                <nb-icon icon="cube" [options]="{ animation: { type: 'pulse' } }"></nb-icon> <!-- zoom shake pulse flip -->
+        
+                <nb-icon icon="clock" [options]="{ animation: { type: 'pulse' } }"></nb-icon> <!-- zoom shake pulse flip -->
+        
+                <nb-icon icon="camera" [options]="{ animation: { type: 'pulse' } }"></nb-icon> <!-- zoom shake pulse flip -->
+        
+                <nb-icon icon="globe-2" [options]="{ animation: { type: 'pulse' } }"></nb-icon> <!-- zoom shake pulse flip -->
+        
+                <nb-icon icon="linkedin" [options]="{ animation: { type: 'pulse' } }"></nb-icon> <!-- zoom shake pulse flip -->
+        
+                <nb-icon icon="image" [options]="{ animation: { type: 'pulse' } }"></nb-icon> <!-- zoom shake pulse flip -->
+        
+                <nb-icon icon="image-2" [options]="{ animation: { type: 'pulse' } }"></nb-icon> <!-- zoom shake pulse flip -->
+        
+            </span>
+        
+        </nb-card-body>
+
+    </nb-card>
+    
+    <nb-card *ngIf="user=='notfound'" class="notfound">
+        <nb-card-body>
+            <span>Profile not found.</span>
+        </nb-card-body>
+    </nb-card>
+</span>

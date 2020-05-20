@@ -2,20 +2,22 @@
 
   <div class="logo-container">
     <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
-      <nb-icon icon="menu-2"></nb-icon>
+      <nb-icon icon="menu-2" ></nb-icon>
     </a>
-    <a class="logo" href="#" (click)="navigateHome()">HQ <span>app</span></a>
+
+    <a class="logo" href="#" (click)="navigateHome()">
+      HQ <span>app</span>
+    </a>
   </div>
 
 </div>
-
 
 <div class="header-container">
   <nb-actions size="small" >
 
     <!-- small screens sm break down-->
     <nb-action class="small-control-item"(click)="GoTo('search');" nbTooltip="Search" nbTooltipPlacement="bottom">
-      <div class="icon-wrapper" [nbPopover]="search" nbPopoverPlacement="bottom" >
+      <div class="icon-wrapper" [nbPopover]="'search'" nbPopoverPlacement="bottom" >
         <nb-icon icon="search" [options]="{ animation: { type: 'pulse' } }"></nb-icon>
       </div>
     </nb-action>
@@ -34,10 +36,18 @@
       </div>
     </nb-action>
 
+
+    <nb-action class="small-control-item" (click)="toggleOnlineUsersBar();"
+      nbTooltip="Online users" nbTooltipPlacement="bottom">
+      <div class="icon-wrapper">
+        <nb-icon icon="people-outline" [options]="{ animation: { type: 'pulse' } }"></nb-icon>
+      </div>
+    </nb-action>
+
     <nb-action class="small-control-item" (click)="openD(dialogUserMenu)">
-      <div class="icon-wrapper-user" [nbTooltip]="user?.name" nbTooltipPlacement="bottom" [nbPopover]="templateNotifsRef" >
-        <nb-user [onlyPicture]="userPictureOnly" [name]="user?.name" title="admin"
-          shape="semi-round" [picture]="user?.picture">
+      <div class="icon-wrapper-user" *ngIf="currentUser" [nbTooltip]="currentUser.fullname" nbTooltipPlacement="bottom" [nbPopover]="templateNotifsRef" >
+        <nb-user [onlyPicture]="userPictureOnly" [name]="currentUser.fullname" title="currentUser.role"
+          shape="semi-round" [picture]="currentUser.avatar">
         </nb-user>
       </div>
     </nb-action>
@@ -58,38 +68,56 @@
 
 
     <!-- medium screens md go up-->
-    <nb-action class="medium-control-item"> <!-- [badgeText]="counter" badgeStatus="primary" -->
-      <div [nbPopover]="templateSearchRef" nbPopoverPlacement="bottom" nbPopoverTrigger="focus" >
-        <input class="input-field" shape="semi-round" type="text" size="60" fieldSize="medium" [(ngModel)]="searchValue" placeholder="Search..." nbInput>
-      </div> 
+    <nb-action *ngIf="users" class="search-action medium-control-item "> <!-- [badgeText]="counter" badgeStatus="primary" -->
+      <div nbPopover="templateSearchRef" nbPopoverPlacement="bottom" nbPopoverTrigger="noop">
+
+        <div class="input-group mySearchInput">
+          <div class="input-group-prepend">
+            <span class="input-group-text pre "><i class=" fas fa-search"></i></span>
+          </div>
+          <input class="form-control" shape="semi-round" type="text" size="50" fieldSize="medium" [(ngModel)]="searchValue" placeholder="Search..." nbInput>
+          <div class="input-group-prepend ">
+            <span class="input-group-text post">
+              <i *ngIf="!searchValue" (click)="searchValue=null;" class="fas fa-users"></i>
+              <i *ngIf="searchValue" (click)="searchValue=null;" class="fas fa-times"></i>
+            </span>
+          </div>
+        </div>
+        <!-- <input class="input-field" shape="semi-round" type="text" size="60" fieldSize="medium" [(ngModel)]="searchValue" placeholder="Search..." nbInput> -->
+      </div>
+      <div>
+        <button nbButton size="small" status="success" (click)="openPopover()">Open Popover</button>
+        <button nbButton size="small" status="danger" (click)="hidePopover()">Close Popover</button>
+      </div>
     </nb-action>
     <ng-template #templateSearchRef>
       <nb-card accent="primary">
-       
-        <nb-card-header *ngIf="recentSearches.length>0 || !searchValue" >
+        
+        <nb-card-header *ngIf="recentSearches.length>0 && !searchValue" >
           <span>Recent Searches</span><span class="link">
-          <a (click)="GoTo('search')">See all</a></span></nb-card-header>
-        <nb-card-header *ngIf="!recentSearches.length>0 && searchValue">
-          <span>Users <span *ngIf="(users | filter : searchValue).length>0">({{(users | filter : searchValue).length}})</span></span> 
-          <span class="link"><a (click)="GoTo('search')" >See all</a></span>
+          <a (click)="GoTo('search')">See all</a></span>
+        </nb-card-header>
+        <nb-card-header *ngIf="recentSearches.length>0 && searchValue">
+          <span>Users <span *ngIf="users">({{(users | search : searchValue).length}})</span></span> 
+          <span class="link"><a [nbPopover]="templateMessagelRef" nbPopoverTrigger="click"  (click)="GoTo('search')" >See all</a></span>
         </nb-card-header>
 
-        <nb-card-body [ngClass]="{'padding0': (recentSearches.length>0 && !searchValue) || (searchValue && (users | filter : searchValue).length>0) }" >
+        <nb-card-body [ngClass]="{'padding0': (recentSearches.length>0 && !searchValue) || (searchValue && (users | search : searchValue).length>0) }" >
           <span *ngIf="!recentSearches.length>0 && !searchValue">No recent searches</span>
           <span *ngIf="recentSearches.length>0 && !searchValue">
             <nb-list> 
-              <nb-list-item class="list-item-hovered" *ngFor="let u of (users.slice(0, 3))" (click)="GoTo('profile/'+u.idUser);">
-                <nb-user [picture]="u.avatar" [name]="u.prenom+' '+u.nom" [title]="u.role" size="medium"></nb-user>
-                <nb-icon (click)="GoTo('profile/'+u.idUser+'/mseh');"icon="close"></nb-icon>
+              <nb-list-item class="list-item-hovered" *ngFor="let u of (users.slice(0, 3))" (click)="GoTo('profile/'+u.username);">
+                <nb-user [picture]="u.avatar" [name]="u.fullname" [title]="u.role" size="medium"></nb-user>
+                <nb-icon (click)="GoTo('profile/'+u.idUser+'/mseh');" icon="close"></nb-icon>
               </nb-list-item>
             </nb-list>
           </span>
           <nb-list *ngIf="searchValue" style="overflow: hidden; overflow-y: auto;" >
-            <nb-list-item class="list-item-hovered" *ngFor="let u of (users | filter : searchValue)" (click)="GoTo('profile/'+u.idUser);">
-              <nb-user [picture]="u.avatar" [name]="u.prenom+' '+u.nom" [title]="u.role" size="medium"></nb-user>
+            <nb-list-item class="list-item-hovered" *ngFor="let u of (users | search : searchValue)" (click)="GoTo('profile/'+u.username);">
+              <nb-user [picture]="u.avatar" [name]="u.fullname" [title]="u.role" size="medium"></nb-user>
             </nb-list-item>
           </nb-list>
-          <span  *ngIf="!(users | filter : searchValue).length>0 && searchValue">No result found</span>
+          <span  *ngIf="!(users | search : searchValue).length>0 && searchValue">No result found</span>
         </nb-card-body>
 
       </nb-card>
@@ -97,12 +125,12 @@
 
 
     <nb-action class="medium-control-item" nbTooltip="Messages" nbTooltipPlacement="bottom">
-      <div class="icon-wrapper" [nbPopover]="templateMailRef" nbPopoverPlacement="bottom" (click)="this.messagesCounter=null;">
+      <div class="icon-wrapper" [nbPopover]="templateMessagelRef" nbPopoverPlacement="bottom" (click)="this.messagesCounter=null;openPopover();">
         <nb-icon icon="email-outline" [options]="{ animation: { type: 'pulse' } }" ></nb-icon>
-        <span class="badge">{{messagesCounter}}</span>
+        <span class="badge">+{{messagesCounter+96}}</span>
       </div>
     </nb-action> 
-    <ng-template #templateMailRef>
+    <ng-template #templateMessagelRef>
       <nb-card accent="primary" >
         <nb-card-header>
           <span>Messages</span>
@@ -123,15 +151,16 @@
     </nb-action>
     <ng-template #templateNotifsRef let-ref="notifRef">
         <nb-card accent="info" >
-          <nb-card-header><span class="font-weight-bold">Notifications</span><span class="link"><a (click)="GoTo('notifications');closeP();">See all</a></span></nb-card-header>
+          <nb-card-header>
+            <span class="font-weight-bold">Notifications</span><span class="link"><a (click)="GoTo('notifications');">See all</a></span></nb-card-header>
             <!--parcours les notification en affichant notification.user.picture with notification.text and notification.date -->
             <nb-card-body class="padding0">
               <nb-list>
                 <nb-list-item class="list-item-hovered" *ngFor="let u of users.slice(0, 10) ">
-                  <nb-user [name]="u.prenom+' '+u.nom" [picture]="'https://i.picsum.photos/id/104/3840/2160.jpg'" 
-                   size="large" onlyPicture></nb-user>
+                  <nb-user [name]="u.fullname" [picture]="u.avatar" 
+                   size="large" [badgeText]="'N'" [badgeStatus]="'primary'" [badgePosition]="'bottom right'"onlyPicture></nb-user>
                   <span style="width: 70%;">
-                    <span > <a class="font-weight-bold link"  (click)="GoTo('profile/'+u.idUser)">{{u.prenom}} {{u.nom}} </a> liked your picture blabla bla blala balala. </span>
+                    <span > <a class="font-weight-bold link"  (click)="GoTo('profile/'+u.username)">{{u.fullname}} </a> liked your picture blabla bla blala balala. </span>
                     <span class="text-secondary" style="margin-top: 3px;  display: block;"> 2 days ago </span>
                   </span>
                   <span >
@@ -146,18 +175,43 @@
                 </nb-list-item> 
               </nb-list>
             </nb-card-body>
+            <!--<nb-card-footer><span class="link"><a (click)="GoTo('notifications');">See all</a></span></nb-card-footer>-->
         </nb-card>
     </ng-template>
 
+
+    <nb-action class="medium-control-item" (click)="toggleOnlineUsersBar();" nbTooltip="Online Users"
+      nbTooltipPlacement="bottom">
+      <div class="icon-wrapper">
+        <nb-icon icon="people-outline" [options]="{ animation: { type: 'pulse' } }"></nb-icon>
+        <span class="badge">{{activeUserCount}}</span>
+      </div>
+    </nb-action>
+
     <nb-action class="medium-control-item " *nbIsGranted="['view', 'user']" >
       <div class="icon-wrapper-user">
-        <nb-user [nbContextMenu]="userMenu"
-                [onlyPicture]="userPictureOnly"
-                [name]="user?.name"
-                title="admin" shape="semi-round" 
-                [picture]="user?.picture" >
+        <nb-user *ngIf="currentUser" [size]="'large'" [nbContextMenu]="userMenu" [onlyPicture]="userPictureOnly" [name]="currentUser.fullname"
+          [title]="'@'+currentUser.username" shape="semi-round" [picture]="currentUser.avatar">
+        </nb-user>
+        <nb-user *ngIf="!currentUser" [size]="'large'" [name]="" picture="../../../../assets/images/Anonymous.jpg" >
         </nb-user>
       </div>
     </nb-action>
   </nb-actions>
 </div>
+
+
+<ng-template #LostUserRef let-data let-ref="dialogRef">
+  <nb-card size="xsmall" status="danger">
+    <nb-card-header>Error Connexion lost !
+    </nb-card-header>
+    <nb-card-body >
+      <div class="col">
+        <p>Please check your server or your connexion and refresh...</p>
+      </div>
+      <div class="col text-center">
+        <button nbButton outline status="info" hero shape="semi-round" (click)="reload()">Refresh</button>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

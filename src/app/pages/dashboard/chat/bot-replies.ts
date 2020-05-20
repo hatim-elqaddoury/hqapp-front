@@ -1,4 +1,4 @@
-const botAvatar: string = '';
+const botAvatar: string = ''; //https://avatars1.githubusercontent.com/u/32289823?s=460&u=63350a921390e13fc066bdb762ce18787e8713c8&v=4
 export const gifsLinks: string[] = [
   'https://media.giphy.com/media/K0ZZjkjYKiD7y/giphy.gif',
   'https://media.tenor.com/images/ac287fd06319e47b1533737662d5bfe8/tenor.gif',

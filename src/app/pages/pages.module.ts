@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { NbMenuModule, NbIconModule, NbCardModule } from '@nebular/theme';
+import { NbMenuModule, NbIconModule, NbCardModule, NbUserModule } from '@nebular/theme';
 
 import { ThemeModule } from '../@theme/theme.module';
 import { PagesComponent } from './pages.component';
@@ -12,9 +12,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { SearchComponent } from './search/search.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { MessagesComponent } from './messages/messages.component';
-import { PrivacyComponent } from './privacy/privacy.component';
-import { AboutComponent } from './about/about.component';
-import { TermsComponent } from './terms/terms.component';
 
 @NgModule({
   imports: [
@@ -26,6 +23,7 @@ import { TermsComponent } from './terms/terms.component';
     NbIconModule,
     NbEvaIconsModule,
     NbCardModule,
+    NbUserModule,
   ],
   declarations: [
     PagesComponent,
@@ -34,9 +32,6 @@ import { TermsComponent } from './terms/terms.component';
     SearchComponent,
     NotificationsComponent,
     MessagesComponent,
-    PrivacyComponent,
-    AboutComponent,
-    TermsComponent,
   ],
 })
 export class PagesModule {

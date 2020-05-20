@@ -1,6 +1,5 @@
 <div class="header-container">
 
-
   <div class="logo-container">
    <a class="logo" href="#" (click)="navigateHome()">HQ <span>app</span></a>
   </div>
@@ -22,8 +21,16 @@
       <nb-icon nbTooltip="Light mode" [options]="{ animation: { type: 'pulse' } }" nbTooltipPlacement="bottom" icon="sun-outline"></nb-icon>
     </nb-action>
 
-    <nb-action class="user-action" *nbIsGranted="['view', 'user']" >
-      <a class="link" (click)="GoTo('auth/login')">Login</a>
+    <nb-action class="user-action" *ngIf="!isConnected">
+      <nb-icon nbTooltip="Log in" [options]="{ animation: { type: 'pulse' } }" nbTooltipPlacement="bottom"  icon="person-outline" (click)="GoTo('auth/login')" ></nb-icon>
+      <!--<a class="link" (click)="GoTo('auth/login')">LogIn</a>-->
     </nb-action>
+
+    <nb-action class="user-action" *ngIf="isConnected">
+      <a class="link" (click)="GoTo('app/dashboard')">
+        <nb-icon  nbTooltip="Connect" [options]="{ animation: { type: 'pulse' } }" nbTooltipPlacement="bottom" icon="external-link-outline"></nb-icon>
+      </a>
+    </nb-action>
+    
   </nb-actions>
 </div>

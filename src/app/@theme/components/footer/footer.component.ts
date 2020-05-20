@@ -24,7 +24,7 @@ export class FooterComponent {
   }
   GoTo(url: string): any {
     this.router.navigateByUrl("/app/" + url);
-    this.sidebarService.collapse('menu-sidebar');
+    //this.sidebarService.collapse('menu-sidebar');
   }
 
 }

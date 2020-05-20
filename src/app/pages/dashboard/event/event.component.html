@@ -1,19 +1,20 @@
 <nb-card [size]="'large'">
-  <nb-tabset fullWidth>
-    <nb-tab [tabTitle]="'Users ('+users.slice(0, 10).length+')'">
+  <nb-tabset fullWidth >
+    <nb-tab *ngIf="activeUsers" tabIcon="people-outline" [tabTitle]="'Active Users ('+activeUsers.length+')'">
         <nb-list style="overflow: hidden; overflow-y: auto;">
-          <nb-list-item class="users" *ngFor="let u of users.slice(0, 10) ">
-            <nb-user [picture]="" [name]="u.prenom+' '+u.nom" [title]="u.role" size="large"></nb-user>
+          <nb-list-item class="users" *ngFor="let u of activeUsers ">
+            <nb-user [picture]="u.avatar"  [name]="u.fullname" [title]="u.role" size="large" [badgeText]="'4m'" [badgeStatus]="'success'" badgePosition="bottom right"></nb-user>
               <div class="users">
                 <nb-icon icon="award-outline" pack="eva" style="cursor: pointer;" [options]="{ animation: { type: 'shake' } }"></nb-icon>
               </div>
           </nb-list-item>
         </nb-list>
     </nb-tab>
-    <nb-tab [tabTitle]="'others '">
-      <nb-card [size]="'large'">
+    <nb-tab tabIcon="message-circle-outline" [tabTitle]="'others'">
+      <div style="padding: 1em;">
         <p> empty for now.</p>
-      </nb-card>
+      </div>
     </nb-tab>
   </nb-tabset>
 <nb-card>  
+

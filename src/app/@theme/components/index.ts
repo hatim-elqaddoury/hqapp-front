@@ -4,3 +4,7 @@ export * from './footer/footer.component';
 export * from './public-footer/public-footer.component';
 export * from './search-input/search-input.component';
 export * from './tiny-mce/tiny-mce.component';
+export * from './chat/chat.component';
+export * from './about/about.component';
+export * from './terms/terms.component';
+export * from './privacy/privacy.component';

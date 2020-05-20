@@ -1,0 +1,55 @@
+<nb-layout windowMode>
+    <nb-layout-header fixed>
+        <hq-public-header></hq-public-header>
+    </nb-layout-header>
+
+    <nb-layout-column>
+        <ng-content select="router-outlet"></ng-content>
+
+        <span class="medium-control-item">
+            <div *ngIf="!chatbotToggle" class="profile-card-socialid=" id="chatbotButton" (click)="toggle()">
+                <span class="profile-card-social__item chatbot">
+                    <span class="icon-font">
+                        <i class="ion ion-chatbox-working"></i>
+                    </span>
+                </span>
+            </div>
+            
+            <span *ngIf="chatbotToggle && !ChatBotRefOpened">
+                <div class="messsageBox">
+                    <hq-chatbot></hq-chatbot>
+                </div>
+            </span>
+        </span>
+
+        <span class="small-control-item">
+            <div *ngIf="!chatbotToggle" class="profile-card-social" id="chatbotButton" (click)="toggle(); openD(ChatBotRef); ChatBotRefOpened=true;  ">
+                <span class="profile-card-social__item chatbot">
+                    <span class="icon-font">
+                        <i class="ion ion-chatbox-working"></i>
+                    </span>
+                </span>
+            </div>
+            
+            <ng-template #ChatBotRef>
+                <hq-chatbot></hq-chatbot>
+            </ng-template>
+        </span>
+
+        <div *ngIf="chatbotToggle" class="profile-card-social" id="chatbotButton" (click)="toggle()">
+            <span class="profile-card-social__item chatbot">
+                <span class="icon-font">
+                    <i class="ion ion-close"></i>
+                </span>
+            </span>
+        </div>
+        
+        
+
+    </nb-layout-column>
+
+
+    <nb-layout-footer fixed>
+        <hq-public-footer></hq-public-footer>
+    </nb-layout-footer>
+</nb-layout>

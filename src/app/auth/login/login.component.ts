@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NbLoginComponent } from '@nebular/auth';
+import { NbLoginComponent, NbAuthService } from '@nebular/auth';
 
 @Component({
   selector: 'hq-login',
@@ -7,4 +7,5 @@ import { NbLoginComponent } from '@nebular/auth';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent extends NbLoginComponent{
+      
 }

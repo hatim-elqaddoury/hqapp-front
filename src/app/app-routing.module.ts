@@ -1,17 +1,11 @@
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import {
-  NbAuthComponent,
-  NbLoginComponent,
-  NbLogoutComponent,
-  NbRegisterComponent,
-  NbRequestPasswordComponent,
-  NbResetPasswordComponent,
-} from '@nebular/auth';
+import { AuthGuard } from './@core/utils';
 
 const routes: Routes = [
   {
     path: 'app',
+    canActivate: [AuthGuard],
     loadChildren: () => import('../app/pages/pages.module')
       .then(m => m.PagesModule),
   },
@@ -28,7 +22,7 @@ const routes: Routes = [
 ];
 
 const config: ExtraOptions = {
-  useHash: true,
+  useHash: false,
 };
 
 @NgModule({

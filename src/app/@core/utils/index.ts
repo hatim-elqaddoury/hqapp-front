@@ -3,6 +3,7 @@ import { AnalyticsService } from './analytics.service';
 import { PlayerService } from './player.service';
 import { StateService } from './state.service';
 import { AdminService } from './admin.service';
+import { AuthGuard } from './auth-guard.service';
 
 export {
   LayoutService,
@@ -10,4 +11,5 @@ export {
   PlayerService,
   StateService,
   AdminService,
+  AuthGuard,
 };

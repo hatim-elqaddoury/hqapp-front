@@ -1,11 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
 
-import { UserData } from '../../../@core/data/users';
 import { LayoutService, AdminService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { NbAuthService } from '@nebular/auth';
+import { AuthenticationService } from '../../../@core/utils/authentication.service';
+import { Title } from '@angular/platform-browser';
+import { title } from '../../../@core/mock/conf';
 
 @Component({
   selector: 'hq-public-header',
@@ -37,40 +40,57 @@ export class PublicHeaderComponent implements OnInit, OnDestroy {
 
   currentTheme = 'dark';
   dbTheme: any;
-
+  isConnected: Boolean; 
+  currentUser: any;
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
               private themeService: NbThemeService,
-              private userService: UserData,
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService,
               private adminS: AdminService, 
-              private router: Router) {
+              private router: Router, 
+              private authService: NbAuthService,
+              private authS: AuthenticationService,
+              private titleService: Title) {
+    this.titleService.setTitle(title.value+"・public");
+    this.authService.isAuthenticated().subscribe((result) => {
+
+      if (result) {
+        //get theme from backend if authenticated.
+        this.authS.getConnected().subscribe((res:any) => {
+          
+          if(res) this.currentUser = res.user;
+
+          if (this.currentUser) this.currentTheme = this.currentUser.theme;
+          if (this.currentTheme == 'dark') {
+            this.changeTheme('dark');
+          } else if (this.currentTheme == 'default') {
+            this.changeTheme('default');
+          }
+        });
+      }else{
+        //get theme from backend if not authenticated.
+        this.adminS.getSetting("theme").subscribe(res => {
+          this.dbTheme = res;
+          if(this.dbTheme != (null && undefined)){
+            this.currentTheme = this.dbTheme.value;
+            if (this.currentTheme == 'dark') {
+              this.changeTheme('dark');
+            } else if (this.currentTheme == 'default') {
+              this.changeTheme('default');
+            }else{
+              this.changeTheme('dark');
+            }
+          }
+        });
+      }
+        this.isConnected = result;
+    });
+
   }
 
   ngOnInit() {
-
-    this.adminS.getSetting("theme").subscribe(res => {
-      this.dbTheme = res;
-      this.currentTheme = this.dbTheme.value;
-      if (this.currentTheme == 'dark') {
-        this.changeTheme('dark');
-      } else if (this.currentTheme == 'default') {
-        this.changeTheme('default');
-      }
-    });
-
-    //this.currentTheme = this.themeService.currentTheme;
-
-    this.userService.getUsers()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((users: any) => this.user = users.hatim);
-
-
-      this.userService.getContacts()
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((c: any) => this.usertitle = c.type);
 
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
@@ -95,20 +115,21 @@ export class PublicHeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+    this.titleService.setTitle(title.value);
   }
 
   changeTheme(themeName: string) {
     this.themeService.changeTheme(themeName);
     this.currentTheme = themeName;
-    this.dbTheme.value = this.currentTheme;
-    this.adminS.setSetting(this.dbTheme).subscribe();
-    
+    if(this.dbTheme) this.dbTheme.value = this.currentTheme;
+    let currentUserCopy = this.currentUser;
+    if(currentUserCopy) currentUserCopy.theme = this.dbTheme;
+    //this.adminS.updateUser(currentUserCopy).subscribe();
   }
 
   toggleSidebar(): boolean {
     this.sidebarService.toggle(true, 'menu-sidebar');
     this.layoutService.changeLayoutSize();
-
     return false;
   }
 

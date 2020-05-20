@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PublicComponent } from './public.component';
 import { HomeComponent } from './home/home.component';
+import { PrivacyComponent, TermsComponent, AboutComponent } from '../@theme/components';
 
 export const routes: Routes = [
     // .. here goes our components routes
@@ -16,6 +17,18 @@ export const routes: Routes = [
             {
                 path: 'home',
                 component: HomeComponent,
+            },
+            {
+                path: 'privacy',
+                component: PrivacyComponent,
+            },
+            {
+                path: 'terms',
+                component: TermsComponent,
+            },
+            {
+                path: 'about',
+                component: AboutComponent,
             },
             {
                 path: 'miscellaneous',

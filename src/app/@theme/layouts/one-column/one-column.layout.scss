@@ -8,6 +8,21 @@
     padding-top: nb-theme(layout-padding-top);
   }
 
+  nb-sidebar.online-users{
+
+    hq-online-users{ 
+      width: nb-theme(sidebar-width-compact);
+      margin: 0 -#{nb-theme(sidebar-padding)} -#{nb-theme(sidebar-padding)};
+    }
+
+    &.expanded{
+      width: nb-theme(sidebar-width);
+        > .scrollable {
+          width: nb-theme(sidebar-width);
+      }
+    }
+  }
+
   nb-sidebar{
     &.compacted, &.collapsed{
       .footer {
@@ -16,7 +31,6 @@
     }
   }
 
-  
   .footer {
     position: fixed;
     left: 0;
@@ -32,7 +46,7 @@
     &:hover{
       opacity: 0.8;
     }
-
   }
+
 
 }

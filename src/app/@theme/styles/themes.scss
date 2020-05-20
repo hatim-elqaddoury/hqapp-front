@@ -17,6 +17,8 @@ $nb-themes: nb-register-theme((
   layout-padding-top: 2.25rem,
   layout-window-mode-padding-top: 0,
 
+  badge-border-radius: 100px,
+
   menu-item-icon-margin: 0 0.1rem 0 0,
 
   card-height-tiny: $card-height-tiny,
@@ -49,11 +51,11 @@ $nb-themes: nb-register-theme((
   color-primary-200: #d9e4ff,
   color-primary-300: #a6c1ff,
   color-primary-400: #598bff,
-  color-primary-500: #3366ff,
+  color-primary-500: #338bff,
   color-primary-600: #274bdb,
-  color-primary-700: #1a34b8,
-  color-primary-800: #102694,
-  color-primary-900: #091c7a,
+  color-primary-700: #1a4cb8,
+  color-primary-800: #103394,
+  color-primary-900: #09337a,
 
   color-success-100: #f0fff5,
   color-success-200: #ccfce3,
@@ -88,12 +90,12 @@ $nb-themes: nb-register-theme((
   color-danger-100: #fff2f2,
   color-danger-200: #ffd6d9,
   color-danger-300: #ffa8b4,
-  color-danger-400: #ff708d,
-  color-danger-500: #ff3d71,
-  color-danger-600: #db2c66,
-  color-danger-700: #b81d5b,
-  color-danger-800: #94124e,
-  color-danger-900: #700940,
+  color-danger-400: #ff7070,
+  color-danger-500: #ff3d3d,
+  color-danger-600: #db2c2c,
+  color-danger-700: #b81d1d,
+  color-danger-800: #941212,
+  color-danger-900: #700909,
 
   /* Basic colors - for backgrounds and borders and texts */
 
@@ -108,6 +110,7 @@ $nb-themes: nb-register-theme((
   color-basic-900: #06070c,
   color-basic-1000: #151a30,
   color-basic-1100: #101426,  
+  color-basic-1200: #9e9e9e, 
 
   /* Status colors states - focus, hover, default, active, disabled  */
 
@@ -320,6 +323,10 @@ $nb-themes: nb-register-theme((
   divider-style: solid,
   divider-width: 1px,
 
+
+  //user-picture-box-background-color : black,
+  //user-picture-box-border-color: black
+
 ), default, default);
 
 
@@ -328,6 +335,9 @@ $nb-themes: nb-register-theme((
 */
 
 $nb-themes: nb-register-theme((
+
+
+  badge-border-radius: 100px,
 
   font-family-secondary: font-family-primary,
   layout-padding-top: 2.25rem,
@@ -359,15 +369,16 @@ $nb-themes: nb-register-theme((
 s
   text-disabled-color: color-basic-600,
 
-  color-info-100: #f2f8ff,
-  color-info-200: #c7e2ff,
-  color-info-300: #94cbff,
-  color-info-400: #427eff,
-  color-info-500: #0059ff,
-  color-info-600: #005dd6,
-  color-info-700: #0057c2,
-  color-info-800: #0011a8,
-  color-info-900: #000285,
+  color-primary-100: #f2f6ff,
+  color-primary-200: #d9e4ff,
+  color-primary-300: #a6c1ff,
+  color-primary-400: #598bff,
+  color-primary-500: #338bff,
+  color-primary-600: #274bdb,
+  color-primary-700: #1a4cb8,
+  color-primary-800: #103394,
+  color-primary-900: #09337a,
+
   
   //color-basic-600: #464545,
   color-basic-700: #252525, 
@@ -375,6 +386,7 @@ s
   color-basic-900: #0c0c0c,
   color-basic-1000: #101010,
   color-basic-1100: #777777,
+  color-basic-1200: #dde1e7,  
 
   shadow: 0 0.5rem 1rem 0 #000000,
 
@@ -414,6 +426,10 @@ s
   border-basic-color-4: color-basic-1000,
   border-basic-color-5: color-basic-1100,
   */
+
+  user-picture-box-background-color : color-basic-700,
+  //user-picture-box-border-color: color-basic-1100,
+
 
 ), dark, dark);
 
