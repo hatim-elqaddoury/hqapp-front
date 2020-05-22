@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService, NbPopoverDirective, NbDialogService } from '@nebular/theme';
+import { Component, OnDestroy, OnInit, ViewChild, TemplateRef, ViewChildren, QueryList } from '@angular/core';
+import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService, NbPopoverDirective, NbDialogService, NbPopoverComponent } from '@nebular/theme';
 
 import { LayoutService, AdminService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
-import { NbAuthService, NbTokenStorage, NbTokenService, NbAuthJWTToken } from '@nebular/auth';
 import { AuthenticationService } from '../../../@core/utils/authentication.service';
 
 @Component({
@@ -41,13 +40,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { title: 'Log out', icon: 'power-outline', link: ''}
   ];
 
-  @ViewChild(NbPopoverDirective, { static: false }) popover: NbPopoverDirective;
-
   @ViewChild('LostUserRef', { static: true }) LostUserRef: TemplateRef<any>;
 
-  @ViewChild('templateSearchRef', { static: true }) templateSearchRef: NbPopoverDirective;
-
-
+  //@ViewChild(NbPopoverDirective, { static: false }) popover: NbPopoverDirective;
+  @ViewChildren(NbPopoverDirective) popovers: QueryList<NbPopoverDirective>;
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
@@ -78,13 +74,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-   
 
     this.getConnectedInterval = setInterval(() => { 
       this.getConnected();
       this.getUsers();
     }, 7000);
-
     
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
@@ -173,14 +167,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
   }
 
-  openPopover() {
-    console.log(this.popover);
-    this.popover.show();
-  }
-
-  hidePopover(){
-   console.log(this.popover );
-    this.popover.hide();
+  hidePopups() {
+    if (this.popovers) {
+      this.popovers.forEach( (pop:NbPopoverDirective) => {
+        pop.hide();
+      });
+    }
   }
 
   public GoTo(url: string): any {
@@ -188,8 +180,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.subUsers.unsubscribe();
     this.searchValue = null; 
     event.stopPropagation();
-    this.hidePopover();
-    //this.templateSearchRef.hide();
+    this.hidePopups();
   }
 
   public GoToUsrMenu(m: any): any {
@@ -206,6 +197,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.authS.logout(m.link).subscribe();
     }
     event.stopPropagation();
+    this.hidePopups();
   }
 
   changeTheme(themeName: string) {

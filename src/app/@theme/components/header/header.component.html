@@ -17,7 +17,7 @@
 
     <!-- small screens sm break down-->
     <nb-action class="small-control-item"(click)="GoTo('search');" nbTooltip="Search" nbTooltipPlacement="bottom">
-      <div class="icon-wrapper" [nbPopover]="'search'" nbPopoverPlacement="bottom" >
+      <div class="icon-wrapper">
         <nb-icon icon="search" [options]="{ animation: { type: 'pulse' } }"></nb-icon>
       </div>
     </nb-action>
@@ -45,7 +45,7 @@
     </nb-action>
 
     <nb-action class="small-control-item" (click)="openD(dialogUserMenu)">
-      <div class="icon-wrapper-user" *ngIf="currentUser" [nbTooltip]="currentUser.fullname" nbTooltipPlacement="bottom" [nbPopover]="templateNotifsRef" >
+      <div class="icon-wrapper-user" *ngIf="currentUser" [nbTooltip]="currentUser.fullname" nbTooltipPlacement="bottom" >
         <nb-user [onlyPicture]="userPictureOnly" [name]="currentUser.fullname" title="currentUser.role"
           shape="semi-round" [picture]="currentUser.avatar">
         </nb-user>
@@ -69,8 +69,7 @@
 
     <!-- medium screens md go up-->
     <nb-action *ngIf="users" class="search-action medium-control-item "> <!-- [badgeText]="counter" badgeStatus="primary" -->
-      <div nbPopover="templateSearchRef" nbPopoverPlacement="bottom" nbPopoverTrigger="noop">
-
+      <div [nbPopover]="templateSearchRef" nbPopoverPlacement="bottom" nbPopoverTrigger="focus">
         <div class="input-group mySearchInput">
           <div class="input-group-prepend">
             <span class="input-group-text pre "><i class=" fas fa-search"></i></span>
@@ -83,49 +82,45 @@
             </span>
           </div>
         </div>
-        <!-- <input class="input-field" shape="semi-round" type="text" size="60" fieldSize="medium" [(ngModel)]="searchValue" placeholder="Search..." nbInput> -->
-      </div>
-      <div>
-        <button nbButton size="small" status="success" (click)="openPopover()">Open Popover</button>
-        <button nbButton size="small" status="danger" (click)="hidePopover()">Close Popover</button>
       </div>
     </nb-action>
+
     <ng-template #templateSearchRef>
       <nb-card accent="primary">
-        
-        <nb-card-header *ngIf="recentSearches.length>0 && !searchValue" >
+        <nb-card-header *ngIf="recentSearches.length>0 && !searchValue">
           <span>Recent Searches</span><span class="link">
-          <a (click)="GoTo('search')">See all</a></span>
+            <a (click)="GoTo('search')">See all</a></span>
         </nb-card-header>
         <nb-card-header *ngIf="recentSearches.length>0 && searchValue">
-          <span>Users <span *ngIf="users">({{(users | search : searchValue).length}})</span></span> 
-          <span class="link"><a [nbPopover]="templateMessagelRef" nbPopoverTrigger="click"  (click)="GoTo('search')" >See all</a></span>
+          <span>Users <span *ngIf="users">({{(users | search : searchValue).length}})</span></span>
+          <span class="link"><a [nbPopover]="templateMessagelRef" nbPopoverTrigger="click" (click)="GoTo('search')">See
+              all</a></span>
         </nb-card-header>
-
-        <nb-card-body [ngClass]="{'padding0': (recentSearches.length>0 && !searchValue) || (searchValue && (users | search : searchValue).length>0) }" >
+        <nb-card-body
+          [ngClass]="{'padding0': (recentSearches.length>0 && !searchValue) || (searchValue && (users | search : searchValue).length>0) }">
           <span *ngIf="!recentSearches.length>0 && !searchValue">No recent searches</span>
           <span *ngIf="recentSearches.length>0 && !searchValue">
-            <nb-list> 
+            <nb-list>
               <nb-list-item class="list-item-hovered" *ngFor="let u of (users.slice(0, 3))" (click)="GoTo('profile/'+u.username);">
                 <nb-user [picture]="u.avatar" [name]="u.fullname" [title]="u.role" size="medium"></nb-user>
                 <nb-icon (click)="GoTo('profile/'+u.idUser+'/mseh');" icon="close"></nb-icon>
               </nb-list-item>
             </nb-list>
           </span>
-          <nb-list *ngIf="searchValue" style="overflow: hidden; overflow-y: auto;" >
-            <nb-list-item class="list-item-hovered" *ngFor="let u of (users | search : searchValue)" (click)="GoTo('profile/'+u.username);">
+          <nb-list *ngIf="searchValue" style="overflow: hidden; overflow-y: auto;">
+            <nb-list-item class="list-item-hovered" *ngFor="let u of (users | search : searchValue)"
+              (click)="GoTo('profile/'+u.username);">
               <nb-user [picture]="u.avatar" [name]="u.fullname" [title]="u.role" size="medium"></nb-user>
             </nb-list-item>
           </nb-list>
-          <span  *ngIf="!(users | search : searchValue).length>0 && searchValue">No result found</span>
+          <span *ngIf="!(users | search : searchValue).length>0 && searchValue">No result found</span>
         </nb-card-body>
-
       </nb-card>
     </ng-template>
 
 
     <nb-action class="medium-control-item" nbTooltip="Messages" nbTooltipPlacement="bottom">
-      <div class="icon-wrapper" [nbPopover]="templateMessagelRef" nbPopoverPlacement="bottom" (click)="this.messagesCounter=null;openPopover();">
+      <div class="icon-wrapper" [nbPopover]="templateMessagelRef" nbPopoverPlacement="bottom" (click)="this.messagesCounter=null;" >
         <nb-icon icon="email-outline" [options]="{ animation: { type: 'pulse' } }" ></nb-icon>
         <span class="badge">+{{messagesCounter+96}}</span>
       </div>

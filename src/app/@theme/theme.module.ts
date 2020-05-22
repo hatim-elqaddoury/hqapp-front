@@ -23,6 +23,7 @@ import {
   NbDialogModule,
   NbBadgeModule,
   NbChatModule,
+  
 } from '@nebular/theme';
 import { NbSecurityModule } from '@nebular/security';
 
@@ -87,7 +88,7 @@ const NB_MODULES = [
   NbInputModule,
   NbPlatformModule,
   NbChatModule,
-  NbDialogModule.forChild(),
+  NbDialogModule.forChild(), 
 ];
 const COMPONENTS = [
   HeaderComponent,
