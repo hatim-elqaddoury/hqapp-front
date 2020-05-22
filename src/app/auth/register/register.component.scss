@@ -1,7 +1,9 @@
 @import '../../@theme/styles/themes';
 
 @include nb-install-component() {
-
+    .error-message{
+        color: nb-theme( color-danger-400);
+    }
 
 
 }
