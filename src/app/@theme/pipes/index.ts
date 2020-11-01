@@ -4,3 +4,6 @@ export * from './round.pipe';
 export * from './timing.pipe';
 export * from './number-with-commas.pipe';
 export * from './search.pipe';
+export * from './time-ago.pipe';
+export * from './time-ago-short.pipe';
+export * from './order.pipe';

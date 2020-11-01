@@ -10,6 +10,9 @@
 
   nb-sidebar.online-users{
 
+    .scrollable{
+      overflow-y: hidden;
+    }
     hq-online-users{ 
       width: nb-theme(sidebar-width-compact);
       margin: 0 -#{nb-theme(sidebar-padding)} -#{nb-theme(sidebar-padding)};

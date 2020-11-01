@@ -1,0 +1,37 @@
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+
+@import 'shape-buttons';
+@import 'size-buttons';
+@import 'status-buttons';
+@import 'hero-buttons';
+@import 'outline-buttons';
+
+@mixin nb-b-buttons-theme() {
+
+  .btn {
+    cursor: nb-theme(button-cursor);
+    font-family: nb-theme(button-text-font-family);
+    font-weight: nb-theme(button-text-font-weight);
+
+    &:focus {
+      box-shadow: 0 0 0 nb-theme(button-outline-width) nb-theme(button-outline-color);
+      outline: none;
+    }
+
+    &[disabled] {
+      cursor: nb-theme(button-disabled-cursor);
+    }
+
+    @include b-btn-size(medium);
+  }
+
+  @include b-btn-shapes();
+  @include b-btn-sizes();
+  @include b-btn-statuses();
+  @include b-btn-heros();
+  @include b-btn-outlines();
+}

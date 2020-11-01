@@ -46,6 +46,9 @@ import {
   TimingPipe,
   NumberWithCommasPipe,
   SearchPipe,
+  TimeAgoPipe,
+  TimeAgoShortPipe,
+  OrderPipe,
 } from './pipes';
 import {
   OneColumnLayoutComponent,
@@ -113,12 +116,15 @@ const PIPES = [
   RoundPipe,
   TimingPipe,
   NumberWithCommasPipe, 
-  SearchPipe
+  SearchPipe,
+  TimeAgoPipe,
+  TimeAgoShortPipe,
+  OrderPipe,
 ];
 
 @NgModule({
   imports: [CommonModule, ...NB_MODULES, ...ANG_MODULES],
-  exports: [CommonModule, ...PIPES, ...COMPONENTS],
+  exports: [CommonModule, ...PIPES, ...COMPONENTS,],
   declarations: [...COMPONENTS, ...PIPES],
 })
 export class ThemeModule {

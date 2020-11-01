@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, TemplateRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, TemplateRef, ViewChildren, QueryList, DoCheck } from '@angular/core';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService, NbPopoverDirective, NbDialogService, NbPopoverComponent } from '@nebular/theme';
 
 import { LayoutService, AdminService } from '../../../@core/utils';
@@ -6,6 +6,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../@core/utils/authentication.service';
+import { CryptoService } from '../../../@core/utils/crypto.service';
 
 @Component({
   selector: 'hq-header',
@@ -15,24 +16,26 @@ import { AuthenticationService } from '../../../@core/utils/authentication.servi
 export class HeaderComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<void> = new Subject<void>();
-  userPictureOnly: boolean = false;
-  user: any;
-  usertitle: any;
-  currentUser: any = "anonymous";
-  activeUserCount: number;
-  currentTheme :any;
-  dbTheme: any;
-  users: any = [];
-  notifsCounter: number;
-  messagesCounter: number;
-  searchValue: any;
-  subUsers: any;
-  subCurrentUser: any;
-  getConnectedInterval: any;
-  urlimagetest: any = "https://i.picsum.photos/id/339/200/200.jpg"; //test notif
+  private userPictureOnly: boolean = false;
+  private user: any;
+  private usertitle: any;
+  private currentUser: any = "anonymous";
+  private activeUserCount: number;
+  private currentTheme :any;
+  private dbTheme: any;
+  private users: any = [];
+  private notifsCounter: number;
+  private messagesCounter: number=0;
+  private searchValue: any;
+  private subUsers: any;
+  private subMenuService: any;
+  private subCurrentUser: any;
+  private getConnectedInterval: any;
+  private getUsersInterval: any;
+  private urlimagetest: any = "https://dyl80ryjxr1ke.cloudfront.net/external_assets/hero_examples/hair_beach_v1785392215/original.jpeg"; //test notif
 
   // par utilisateurs connecté, 10 max.
-  recentSearches = [{}]; 
+  recentSearches = [{}];
 
   userMenu = [
     { title: 'Profile', icon: 'person-outline', link: '/app/profile/' }, 
@@ -52,9 +55,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private breakpointService: NbMediaBreakpointsService,
               private adminS: AdminService,
               private router: Router,
+              private cryptoS: CryptoService,
               private dialogService: NbDialogService,
-              public authS: AuthenticationService) {
-   
+              private authS: AuthenticationService) {
     this.getConnected();
     this.getUsers();
 
@@ -75,10 +78,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.getConnectedInterval = setInterval(() => { 
+    this.getConnectedInterval = setInterval(() => {
       this.getConnected();
+    }, 3000);
+
+    this.getUsersInterval = setInterval(() => {
       this.getUsers();
-    }, 7000);
+    }, 30000);
     
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
@@ -87,7 +93,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
       )
       .subscribe((v: boolean) => {
-        if (v) this.menuService.onItemClick().subscribe((e) => { this.sidebarService.toggle(false, 'menu-sidebar') });
+        if (v) this.subMenuService = this.menuService.onItemClick().subscribe((e) => { this.sidebarService.toggle(false, 'menu-sidebar') });
         this.userPictureOnly = v; 
       });
 
@@ -99,7 +105,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .subscribe(themeName => this.currentTheme = themeName);
 
 
-    this.menuService.onItemClick().subscribe((event) => {
+    this.subMenuService = this.menuService.onItemClick().subscribe((event) => {
       if (event.item.title === 'Dark mode' || event.item.title === 'Light mode'  ) {
         if(this.currentTheme=='dark'){
           this.changeTheme('default');
@@ -109,25 +115,33 @@ export class HeaderComponent implements OnInit, OnDestroy {
         //set theme for the curent user
         let currentUserCopy = this.currentUser;
         if (currentUserCopy) {
+
           currentUserCopy.theme = this.dbTheme;
           this.adminS.updateUser(currentUserCopy).subscribe();
         }
-
+        
       } else if (event.item.title == 'Log out') {
-        this.authS.logout("/").subscribe();
+        this.authS.logout("/");
       }
     });
 
   }
 
   getConnected() {
-    this.subCurrentUser = this.authS.getConnected().subscribe((res: any) => {
-      if (res && this.currentUser != res.user) this.currentUser = res.user;
+    this.subCurrentUser = this.authS.getConnected().subscribe((r: any) => {
+
+      let res = this.cryptoS.decrypt(r["encrypted"]);
+
+      if (res && this.currentUser != res["user"]) this.currentUser = JSON.parse(res["user"]);
       else this.currentUser = null;
-      if (res && res.activeUsers) this.activeUserCount = res.activeUsers;
+      
+      if (res && res.activeUsers) this.activeUserCount = JSON.parse(res.activeUsers);
 
       if (this.currentUser) {
         this.currentTheme = this.dbTheme = this.currentUser.theme;
+        //  a revoir la date
+        this.currentUser.lastCnx = new Date(this.currentUser.lastCnx);
+        this.currentUser.joinedDate = new Date(this.currentUser.joinedDate);
         if (this.currentTheme == 'dark') {
           this.changeTheme('dark');
         } else if (this.currentTheme == 'default') {
@@ -138,25 +152,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.userMenu[0].link = '/app/profile/'+this.currentUser.username;
       } else {
         clearInterval(this.getConnectedInterval);
-        this.authS.logout("/").subscribe();
+        clearInterval(this.getUsersInterval);
+        this.authS.logout("/");
       }
-    }, (err:any)=>{
+      
+    }, ()=>{
+      this.authS.logout("/");
       this.showError();
     });
   }
 
   getUsers(){
     this.subUsers = this.adminS.getUsers().subscribe(res => {
-      this.users = res;
+      this.users = this.cryptoS.decrypt(res["encrypted"]);
       if (this.users != (null && undefined)) {
         this.notifsCounter = this.users.slice(0, 10).length;
-        this.messagesCounter = this.users.slice(0, 30).length;
+        this.messagesCounter = (this.users!=null)?this.users.slice(0, 30).length:1;
       }
+      
     }, () => {});
   }
 
   showError(){
     clearInterval(this.getConnectedInterval);
+    clearInterval(this.getUsersInterval);
     this.dialogService.open(
       this.LostUserRef,
       {
@@ -185,16 +204,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   public GoToUsrMenu(m: any): any {
     if(m.title.match('Dark mode') || m.title.match('Light mode')){
+
       if (this.currentTheme == 'dark') this.changeTheme('default');
       else if (this.currentTheme == 'default') this.changeTheme('dark');
       else this.changeTheme('dark');
       let currentUserCopy = this.currentUser;
       currentUserCopy.theme = this.dbTheme;
       this.adminS.updateUser(currentUserCopy).subscribe();
+
     }else if(m.title.match('Profile')){
       this.GoTo('profile/' + this.currentUser.username);
     } else if (m.title.match('Log out')){
-      this.authS.logout(m.link).subscribe();
+      this.authS.logout(m.link);
     }
     event.stopPropagation();
     this.hidePopups();
@@ -231,6 +252,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     clearInterval(this.getConnectedInterval);
+    clearInterval(this.getUsersInterval);
+    this.subMenuService.unsubscribe();
     this.subCurrentUser.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();

@@ -1,1 +1,16 @@
-<p>account works!</p>
+<H2>Account settings</H2>
+
+
+<h4>Email</h4>
+
+<div *ngIf="user.mailVerified">
+    <p>Your mail is verified.</p>
+</div>
+
+<div *ngIf="!user.mailVerified">
+    <p>Your mail isn't verified yet</p>
+    <button nbButton outline status="primary" (click)="verifyMail()"> <i class="icon ion-paper-airplane"> Verify now</i></button>
+</div>
+
+
+

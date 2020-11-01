@@ -1,0 +1,27 @@
+@import '../../../@theme/styles/themes';
+@import '~bootstrap/scss/mixins/breakpoints';
+@import '~@nebular/theme/styles/global/breakpoints';
+
+@include nb-install-component() {
+
+    nb-card{
+        max-width: 900px;
+        margin: 0 auto;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+}
+
+@mixin nb-overrides() {
+
+    nb-auth-block {
+        max-width: 70rem!important;
+    }
+
+    nb-auth-block[_nghost-hea-c4] {
+        display: block;
+        width: 100%;
+        max-width: 100rem;
+    }
+
+}

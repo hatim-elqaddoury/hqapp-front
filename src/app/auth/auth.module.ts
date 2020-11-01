@@ -57,7 +57,7 @@ const formSetting: any = {
                             success: '/app/dashboard',
                             failure: null,
                         },
-                        defaultErrors: ['Username/Password combination is not correct, please try again.'],
+                        defaultErrors: ['Username/Password combination is not correct, please try again..'],
                         defaultMessages: ['You have been successfully logged in. please wait..'],
                     },
                     register: {
@@ -67,8 +67,8 @@ const formSetting: any = {
                             success: '/auth/login',
                             failure: null,
                         },
-                        defaultErrors: ['Username/Password combination is not correct, please try again.'],
-                        //defaultMessages: ['You have been successfully logged in. please wait..'],
+                        defaultErrors: ['Something went wrong. please try again..'],
+                        defaultMessages: ['You have been successfully registred. please wait..'],
                     },
                 }),
             ],
@@ -82,6 +82,11 @@ const formSetting: any = {
                     username: {
                         required: true,
                         minLength: 7,
+                        maxLength: 50,
+                    },
+                    fullName: {
+                        required: true,
+                        minLength: 4,
                         maxLength: 50,
                     },
                 },

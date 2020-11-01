@@ -4,6 +4,7 @@ import { forkJoin } from 'rxjs';
 
 import { Contacts, RecentUsers, UserData } from '../../../@core/data/users';
 import {AdminService} from "../../../@core/utils";
+import { CryptoService } from '../../../@core/utils/crypto.service';
 
 @Component({
   selector: 'ngx-contacts',
@@ -17,9 +18,12 @@ export class ContactsComponent implements OnDestroy {
   subUsers:any;
   time: Date = new Date();
 
-  constructor( private adminS : AdminService) {
+  constructor(
+    private adminS: AdminService,
+    private cryptoS: CryptoService,
+    ) {
     this.subUsers = this.adminS.getUsers().subscribe(res=>{
-      this.users = res;
+      this.users = this.cryptoS.decrypt(res["encrypted"]);   
     }, (err: any)=>{
       //console.log(err);
     });

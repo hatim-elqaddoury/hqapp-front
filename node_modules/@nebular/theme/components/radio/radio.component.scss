@@ -8,42 +8,30 @@
 
 :host {
   display: block;
+  position: relative;
 
   label {
-    position: relative;
     display: inline-flex;
     margin: 0;
     min-height: inherit;
     padding: 0.375rem 1.5rem 0.375rem 0;
-  }
-
-  input {
-    position: absolute;
-    opacity: 0;
-
-    &:disabled {
-      & + .radio-indicator,
-      & ~ .radio-description {
-        opacity: 0.5;
-      }
-    }
-  }
-
-  .radio-indicator {
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: flex;
-    justify-content: center;
     align-items: center;
-
-    &::before {
-      content: '';
-      transition: all 0.1s;
-      border-radius: 50%;
-    }
   }
 
-  .radio-description {
+  .outer-circle,
+  .inner-circle {
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+  }
+
+  .inner-circle {
+    transform: translateY(-50%) scale(0.65);
+  }
+
+  .text {
     @include nb-ltr(padding-left, 0.5rem);
     @include nb-rtl(padding-right, 0.5rem);
   }

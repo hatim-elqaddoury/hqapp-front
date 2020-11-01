@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { MENU_ITEMS } from './pages-menu';
 import { AuthenticationService } from '../@core/utils/authentication.service';
+import { CryptoService } from '../@core/utils/crypto.service';
 
 @Component({
   selector: 'hq-pages',
@@ -22,7 +23,10 @@ export class PagesComponent implements OnInit, OnDestroy
   currentUser:any;
   getConnectedInterval:any;
 
-  constructor(private authS: AuthenticationService){
+  constructor(
+    private authS: AuthenticationService,
+    private cryptoS: CryptoService,
+    ){
     
   }
   ngOnInit(): void {
@@ -39,7 +43,7 @@ export class PagesComponent implements OnInit, OnDestroy
 
   getConnected() {
     this.subCurrentUser = this.authS.getConnected().subscribe((res: any) => {
-      this.currentUser = res;
+      this.currentUser = this.cryptoS.decrypt(res["encrypted"]);   
     });
   }
 
