@@ -1,5 +1,7 @@
 const botName: any = "HQ-Bots";
 const botAvatar: string = '../../../assets/images/chatbot.png';
+const fileLink: string = 'http://google.com';
+
 
 export const messages =
   [
@@ -111,3 +113,152 @@ export const messages =
     },
   ];
 */
+
+
+
+
+
+export const help =
+  [
+    {
+      regExp: /([I,i]mage)|(IMAGE)|([P,p]ic)|(Picture)/g,
+      answerArray: ['Hey look at this!', 'Ready to work', 'Yes, master.'],
+      type: 'pic',
+      reply: {
+        text: '',
+        reply: false,
+        date: new Date(),
+        type: 'file',
+        files: [
+          {
+            url: '',
+            type: 'image/jpeg',
+          },
+        ],
+        user: {
+          name: botName,
+          avatar: botAvatar,
+        },
+      },
+    },
+    {
+      regExp: /([G,g]if)|(GIF)/g,
+      type: 'gif',
+      answerArray: ['No problem', 'Well done', 'You got it man'],
+      reply: {
+        text: '',
+        reply: false,
+        date: new Date(),
+        type: 'file',
+        files: [
+          {
+            url: '',
+            type: 'image/gif',
+          },
+        ],
+        user: {
+          name: botName,
+          avatar: botAvatar,
+        },
+      },
+    },
+    {
+      regExp: /([F,f]ile group)|(FILE)/g,
+      type: 'group',
+      answerArray: ['Take it!', 'Job Done.', 'As you wish'],
+      reply: {
+        text: '',
+        reply: false,
+        date: new Date(),
+        type: 'file',
+        files: [
+          {
+            url: fileLink,
+            icon: 'nb-compose',
+          },
+          {
+            url: '',
+            type: 'image/gif',
+          },
+          {
+            url: '',
+            type: 'image/jpeg',
+          },
+        ],
+        icon: 'nb-compose',
+        user: {
+          name: botName,
+          avatar: botAvatar,
+        },
+      },
+    },
+    {
+      regExp: /([F,f]ile)|(FILE)/g,
+      type: 'file',
+      answerArray: ['Take it!', 'Job Done.', 'As you wish'],
+      reply: {
+        text: '',
+        reply: false,
+        date: new Date(),
+        type: 'file',
+        files: [
+          {
+            url: fileLink,
+            icon: 'nb-compose',
+          },
+        ],
+        icon: 'nb-compose',
+        user: {
+          name: botName,
+          avatar: botAvatar,
+        },
+      },
+    },
+    {
+      regExp: /([M,m]ap)|(MAP)/g,
+      type: 'map',
+      answerArray: ['Done.', 'My sight is yours.', 'I shall be your eyes.'],
+      reply: {
+        text: '',
+        reply: false,
+        date: new Date(),
+        type: 'map',
+        latitude: 53.914321,
+        longitude: 27.5998355,
+        user: {
+          name: botName,
+          avatar: botAvatar,
+        },
+      },
+    },
+    {
+      regExp: /([Q,q]uote)|(QUOTE)/g,
+      type: 'quote',
+      answerArray: ['Quoted!', 'Say no more.', 'I gladly obey.'],
+      reply: {
+        text: '',
+        reply: false,
+        date: new Date(),
+        type: 'quote',
+        quote: '',
+        user: {
+          name: botName,
+          avatar: botAvatar,
+        },
+      },
+    },
+    {
+      regExp: /(.*)/g,
+      answerArray: ['first, learn how to ask bro :p "help"'],
+      type: 'text',
+      reply: {
+        text: '',
+        reply: false,
+        date: new Date(),
+        user: {
+          name: botName,
+          avatar: botAvatar,
+        },
+      },
+    },
+  ];

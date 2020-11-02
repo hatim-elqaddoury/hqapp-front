@@ -9,6 +9,7 @@ import { NbAuthService } from '@nebular/auth';
 import { AuthenticationService } from '../../../@core/utils/authentication.service';
 import { Title } from '@angular/platform-browser';
 import { title } from '../../../@core/mock/conf';
+import { CryptoService } from '../../../@core/utils/crypto.service';
 
 @Component({
   selector: 'hq-public-header',
@@ -52,6 +53,7 @@ export class PublicHeaderComponent implements OnInit, OnDestroy {
               private router: Router, 
               private authService: NbAuthService,
               private authS: AuthenticationService,
+              private cryptoS: CryptoService,
               private titleService: Title) {
     this.titleService.setTitle(title.value+"・public");
     this.authService.isAuthenticated().subscribe((result) => {
@@ -60,7 +62,7 @@ export class PublicHeaderComponent implements OnInit, OnDestroy {
         //get theme from backend if authenticated.
         this.authS.getConnected().subscribe((res:any) => {
           
-          if(res) this.currentUser = res.user;
+          if (res) this.currentUser = this.cryptoS.decrypt(res["encrypted"]);
 
           if (this.currentUser) this.currentTheme = this.currentUser.theme;
           if (this.currentTheme == 'dark') {
@@ -72,7 +74,9 @@ export class PublicHeaderComponent implements OnInit, OnDestroy {
       }else{
         //get theme from backend if not authenticated.
         this.adminS.getSetting("theme").subscribe(res => {
-          this.dbTheme = res;
+          
+          this.dbTheme = cryptoS.decrypt(res["encrypted"]);
+
           if(this.dbTheme != (null && undefined)){
             this.currentTheme = this.dbTheme.value;
             if (this.currentTheme == 'dark') {

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { NbMenuModule, NbIconModule, NbCardModule, NbUserModule } from '@nebular/theme';
+import { NbMenuModule, NbIconModule, NbCardModule, NbUserModule, NbButtonModule, NbToastrModule } from '@nebular/theme';
 
 import { ThemeModule } from '../@theme/theme.module';
 import { PagesComponent } from './pages.component';
@@ -12,6 +12,10 @@ import { ProfileComponent } from './profile/profile.component';
 import { SearchComponent } from './search/search.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { MessagesComponent } from './messages/messages.component';
+import { AboutComponent } from './about/about.component';
+import { PrivacyComponent } from './privacy/privacy.component';
+import { TermsComponent } from './terms/terms.component';
+
 
 @NgModule({
   imports: [
@@ -23,7 +27,9 @@ import { MessagesComponent } from './messages/messages.component';
     NbIconModule,
     NbEvaIconsModule,
     NbCardModule,
-    NbUserModule,
+    NbUserModule, 
+    NbButtonModule,
+    NbToastrModule.forRoot(),
   ],
   declarations: [
     PagesComponent,
@@ -32,6 +38,9 @@ import { MessagesComponent } from './messages/messages.component';
     SearchComponent,
     NotificationsComponent,
     MessagesComponent,
+    AboutComponent,
+    PrivacyComponent,
+    TermsComponent,
   ],
 })
 export class PagesModule {

@@ -8,14 +8,15 @@
             </div>
 
             <div class="profile-card__cnt">
-                <div class="profile-card__name">{{user.fullname}}</div>
+                <div class="profile-card__name">{{user.fullname}} <i *ngIf="user.mailVerified" class="icon ion ion-checkmark-circled"></i> </div>
                 <div class="profile-card__txt">
                     <span class="bio"> 
-                    Front-end Developer fromFront-end Developer fromFront-end Developer fromFront-end Developer fromFront-end Developer fromFront-end Developer fromFront-end Developer from (<strong>{{user.role}}</strong>)
+                     
+                    <strong>Joined on {{user.joinedDate | date:'MMMM d, y At h:mm'}}</strong>
                     </span>
                 </div>
                 
-               <!-- 
+               
                 <div class="profile-card-loc">
                     <span class="profile-card-loc__icon">
                         <span class="icon-font">
@@ -28,7 +29,7 @@
                     </span>
                 
                 </div>
-                -->
+                
 
                 <div class="profile-card-inf">
                     <div class="profile-card-inf__item">
@@ -53,33 +54,33 @@
                 </div>
 
                 <div class="profile-card-social">
-                    <a href="https://www.facebook.com/iaMuhammedErdem" class="profile-card-social__item facebook" target="_blank">
+                    <a href="" class="profile-card-social__item facebook" target="_blank">
                         <span class="icon-font">
                             <i class="ion ion-social-facebook"></i>
                         </span>
                     </a>
 
-                    <a href="https://twitter.com/iaMuhammedErdem" class="profile-card-social__item twitter" target="_blank">
+                    <a href="" class="profile-card-social__item twitter" target="_blank">
                         <span class="icon-font">
                             <i class="icon ion ion-social-twitter"></i>
                         </span>
                     </a>
 
-                    <a href="https://www.instagram.com/iamuhammederdem" class="profile-card-social__item instagram"
+                    <a href="" class="profile-card-social__item instagram"
                         target="_blank">
                         <span class="icon-font">
                             <i class="icon ion ion-social-instagram"></i>
                         </span>
                     </a>
 
-                    <a href="https://www.behance.net/iaMuhammedErdem" class="profile-card-social__item behance"
+                    <a href="" class="profile-card-social__item behance"
                         target="_blank">
                         <span class="icon">
                             <i class="icon ion ion-social-facebook"></i>
                         </span>
                     </a>
 
-                    <a href="https://github.com/muhammederdem" class="profile-card-social__item github" target="_blank">
+                    <a href="" class="profile-card-social__item github" target="_blank">
                         <span class="icon-font">
                             <i class="icon ion ion-social-github"></i>
                         </span>
@@ -115,14 +116,14 @@
             </div>
         </nb-card-header>
         
-        <nb-card-body class="space-between">
-            tabs with settings too to
+        <nb-card-body>
+            <p>tabs with settings too to</p>
         
             <span>
                 <div class="col-md-6">
-                    <br />
-                    <input type="file" (change)="onFileChanged($event)" />
-                    <input type="button" (click)="onUpload()" value="Upload file">
+                    <br/>
+                    <input type="file" (change)="onFileChanged($event)" shape="semi-round" fieldSize="large" nbInput nbButton />
+                    <input type="button" (click)="onUpload()" value="Upload file"  nbButton>
                 </div>
             </span>
         
@@ -146,6 +147,10 @@
         
             </span>
         
+        </nb-card-body>
+        <nb-card-body>
+
+
         </nb-card-body>
 
     </nb-card>

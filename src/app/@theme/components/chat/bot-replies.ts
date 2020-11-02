@@ -1,3 +1,7 @@
+import { Console } from 'console';
+
+import { help } from './messages';
+
 const botAvatar: string = '../../../assets/images/chatbot.png'; //https://avatars1.githubusercontent.com/u/32289823?s=460&u=63350a921390e13fc066bdb762ce18787e8713c8&v=4
 const botName: string = 'HQ-Bots';
 export const gifsLinks: string[] = [
@@ -20,38 +24,84 @@ export const pimageLinks: string[] = [
   'https://picsum.photos/200/300'
 
 ];
-const fileLink: string = 'http://google.com';
+
+
+let arrayBotReplies: any = help;
+
+let obj1: any = {
+  regExp: ["cc+", "salam+", "a(bc)+"],
+  answerArray: ["quoi ????", "answer2"],
+  type: "text",
+};
+
+let obj2: any = {
+  regExp: ["si+", "so+", "a(bc)+"],
+  answerArray: ["soso ????", "sisi"],
+  type: "text",
+};
+
+//get data from backend
+let arrobj: any = [obj1, obj2];
 
 
 
-export const botReplies = [
-  {
-    regExp: /([C,c]hno smitek)|([S,s]smitek)|(t'es qui)|(t ki)|(t qui)/g,
-      answerArray: ['Mada w nta ?', '3lach bghiti t3ref hh'],
-      type: 'text',
+arrobj.forEach(obj => {
+
+  //important to use unshit (so the help be in the end of the process)
+
+  if(obj.type==="text"){
+    arrayBotReplies.unshift({
+      regExp: new RegExp(obj.regExp.join("|"), "g"),
+      answerArray: obj.answerArray,
+      type: obj1.type,
       reply: {
         text: '',
+        reply: false,
+        date: new Date(),
+        user: {
+          name: botName,
+          avatar: botAvatar,
+        },
+      },
+    });
+  }
+
+});
+
+
+export const botReplies = arrayBotReplies;
+
+
+
+/*
+[
+  {
+    regExp: new RegExp("([C,c]hno smitek)|([S,s]mitek)|(t'es qui)|(t ki)|(t qui)", "i"),
+    answerArray: ['Mada w nta ?', '3lach bghiti t3ref hh'],
+    type: 'text',
+    reply: {
+      text: '',
+      reply: false,
+      date: new Date(),
+      user: {
+          name: botName,
+          avatar: botAvatar,
+      },
+    },
+  },
+  {
+    regExp: new RegExp(obj1.regExp.join("|"), "g"),
+    answerArray: obj1.answerArray,
+    type: obj1.type,
+    reply: {
+      text: '',
         reply: false,
         date: new Date(),
         user: {
             name: botName,
             avatar: botAvatar,
         },
-      },
-  },
-  {
-      regExp: /([S,s]alam)|([S,s]salut)|([S,s]lt)|([C,c]oucou)|([C,c]c)|([C,c]C)/g,
-      answerArray: ['que veux tu encore ? !', 'Salut !', 'Hey', 'Coucou !', 'pff, quoi ????'],
-      type: 'text',
-      reply: {
-          text: '',
-          reply: false,
-          date: new Date(),
-          user: {
-              name: botName,
-              avatar: botAvatar,
-          },
-      },
+    },
   },
   {
     regExp: /([A,a]feen)|([A,a]fayn)|([A,a]fin)|([F,f]in)|([F,f]iin)/g,
@@ -259,3 +309,4 @@ export const botReplies = [
     },
   },
 ];
+*/

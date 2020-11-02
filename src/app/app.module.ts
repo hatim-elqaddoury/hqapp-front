@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
@@ -20,6 +20,9 @@ import {
 } from '@nebular/theme';
 
 @NgModule({
+  providers: [
+    { provide: LOCALE_ID, useValue: 'en-US' }
+  ],
   declarations: [AppComponent],
   imports: [
     BrowserModule,

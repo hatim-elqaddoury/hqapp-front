@@ -6,7 +6,9 @@ import { RegisterComponent } from './register/register.component';
 import { RegisterTermsComponent } from './register/register-terms/register-terms.component';
 import { AuthGuard } from '../@core/utils';
 import { Title } from '@angular/platform-browser';
-
+import { AuthenticationService } from '../@core/utils/authentication.service';
+import { connected } from 'process';
+import { CryptoService } from '../@core/utils/crypto.service';
 export const routes: Routes = [
     // .. here goes our components routes
     {
@@ -45,9 +47,14 @@ export const routes: Routes = [
 })
 export class HQAuthRoutingModule {
     
-    constructor(private authService: NbAuthService, private route: Router, private titleService:  Title){
+    constructor(
+        private authService: NbAuthService, 
+        private route: Router, 
+        private titleService:  Title
+    ){
 
         this.titleService.setTitle(this.titleService.getTitle() + "・Login");
+
         this.authService.isAuthenticated().subscribe(
             (res:any) => {
                 if(res) this.route.navigateByUrl("/app/");

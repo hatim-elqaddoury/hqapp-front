@@ -11,7 +11,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
     title: 'Personnal section',
     group: true,
   },
-  
   {
     title: 'Settings',
     icon: 'lock-outline',

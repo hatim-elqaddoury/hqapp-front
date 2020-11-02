@@ -1,56 +1,62 @@
 <div class="sidebar-container">
-    
+
     <div class="header">
         <span class="SpaceBetween">
-            <h6>
-                <nb-icon icon="people-outline"></nb-icon> Active Users <span *ngIf="activeUsers">({{activeUsers.length}}) </span>
+
+            <h6 *ngIf="!searchValue">
+                <nb-icon icon="people-outline"></nb-icon> Active Users <span
+                    *ngIf="activeUsers">({{activeUsers.length}}) </span>
             </h6>
+
+            <h6 *ngIf="searchValue">
+                <nb-icon icon="people-outline"></nb-icon> Users <span
+                    *ngIf="(users | search : searchValue)">({{(users | search : searchValue).length}}) </span>
+            </h6>
+
             <h6>
-                <nb-icon class="icon-button" icon="settings-2-outline" [options]="{ animation: { type: 'pulse' } }" ></nb-icon>
+                <nb-icon class="icon-button" icon="settings-2-outline" [options]="{ animation: { type: 'pulse' } }">
+                </nb-icon>
             </h6>
         </span>
     </div>
 
-    <div class="content-container" *ngIf="activeUsers">
-        <nb-list>
-            <nb-list-item *ngFor="let u of (activeUsers| search : searchValue) ">
-                <nb-user class="onlineStatus" [picture]="u.avatar" [name]="u.fullname" [size]="'large'" [badgeText]="' '"
-                    [title]="'🇲🇦 Casablanca'" [badgeStatus]="'success'" badgePosition="bottom right">
-                </nb-user>
-            </nb-list-item>
-
-            <nb-list-item *ngFor="let u of (activeUsers| search : searchValue) ">
-                <nb-user class="onlineStatus" [picture]="u.avatar" [name]="u.fullname" [size]="'large'" [badgeText]="' '"
-                    [title]="'🇲🇦 Fes'" [badgeStatus]="'success'" badgePosition="bottom right">
-                </nb-user>
-            </nb-list-item>
-
-            <nb-list-item *ngFor="let u of (activeUsers| search : searchValue) ">
-                <nb-user class="onlineStatus" [picture]="u.avatar" [name]="u.fullname" [size]="'large'" [badgeText]="' '"
-                    [title]="'🇲🇩 Oran'" [badgeStatus]="'success'" badgePosition="bottom right">
-                </nb-user>
-            </nb-list-item>
-
-            <nb-list-item *ngFor="let u of (activeUsers| search : searchValue) ">
-                <nb-user class="onlineStatus" [picture]="u.avatar" [name]="u.fullname" [size]="'large'" [badgeText]="' '"
-                    [title]="'🇲🇫 Dijon'" [badgeStatus]="'success'" badgePosition="bottom right">
-                </nb-user>
-            </nb-list-item>
-
-
-            <nb-list-item *ngFor="let u of (activeUsers| search : searchValue) ">
-                <nb-user class="onlineStatus" [picture]="u.avatar" [name]="u.fullname" [size]="'large'" [badgeText]="' '"
-                    [title]="'🇲🇫 Toulouse'" [badgeStatus]="'success'" badgePosition="bottom right">
-                </nb-user>
-            </nb-list-item>
-        </nb-list>
-    </div>
-
-    <div class="footer" >
+    <div class="footer">
         <input nbInput type="text" shape="semi-round" type="text" [(ngModel)]="searchValue" nbInput
-        placeholder="Search..." />
+            placeholder="Search..." />
     </div>
+
+    <div class="content-container" *ngIf="users">
+
+        <nb-list *ngIf="searchValue">
+
+            <nb-list-item *ngFor="let u of (users | search : searchValue) | orderBy : 'lastCnx' :true ">
+
+                <nb-user class="awayStatus" [picture]="u.avatar || '../../../assets/images/default-profile.png'"
+                    [name]="u.fullname" [size]="'large'" [badgeText]="(u.lastCnx | timeAgoShort)?'':' '" [title]="u.lastCnx | timeAgo"
+                    [badgeStatus]="u.lastCnx==null || (u.lastCnx | timeAgoShort)?'danger':'success'" badgePosition="bottom right">
+                </nb-user>
+
+
+            </nb-list-item>
+
+        </nb-list>
+
+
+        <nb-list *ngIf="!searchValue">
+
+            <nb-list-item *ngFor="let u of (activeUsers | search : searchValue)">
+
+                <nb-user class="onlineStatus" [picture]="u.avatar || '../../../assets/images/default-profile.png'"
+                    [name]="u.fullname" [size]="'large'" [badgeText]="' '" [title]="u.lastCnx | timeAgo"
+                    [badgeStatus]="(u.lastCnx | timeAgoShort)?'warning':'success'" badgePosition="bottom right">
+                </nb-user>
+
+
+            </nb-list-item>
+
+        </nb-list>
+
+    </div>
+
 
 </div>
-
-

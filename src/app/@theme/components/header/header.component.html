@@ -36,19 +36,12 @@
       </div>
     </nb-action>
 
-
-    <nb-action class="small-control-item" (click)="toggleOnlineUsersBar();"
-      nbTooltip="Online users" nbTooltipPlacement="bottom">
-      <div class="icon-wrapper">
-        <nb-icon icon="people-outline" [options]="{ animation: { type: 'pulse' } }"></nb-icon>
-      </div>
-    </nb-action>
-
     <nb-action class="small-control-item" (click)="openD(dialogUserMenu)">
-      <div class="icon-wrapper-user" *ngIf="currentUser" [nbTooltip]="currentUser.fullname" nbTooltipPlacement="bottom" >
-        <nb-user [onlyPicture]="userPictureOnly" [name]="currentUser.fullname" title="currentUser.role"
-          shape="semi-round" [picture]="currentUser.avatar">
+      <div class="icon-wrapper-user" [nbTooltip]="currentUser.fullname" nbTooltipPlacement="bottom" >
+        <nb-user *ngIf="currentUser" [size]="'medium'" [onlyPicture]="userPictureOnly" [name]="currentUser.fullname" title="currentUser.role"
+          shape="semi-round" [picture]="currentUser.avatar || '../../../assets/images/default-profile.png'">
         </nb-user>
+        <nb-user *ngIf="!currentUser" [size]="'medium'" [name]="" picture="../../../../assets/images/Anonymous.jpg"></nb-user>
       </div>
     </nb-action>
     
@@ -122,7 +115,7 @@
     <nb-action class="medium-control-item" nbTooltip="Messages" nbTooltipPlacement="bottom">
       <div class="icon-wrapper" [nbPopover]="templateMessagelRef" nbPopoverPlacement="bottom" (click)="this.messagesCounter=null;" >
         <nb-icon icon="email-outline" [options]="{ animation: { type: 'pulse' } }" ></nb-icon>
-        <span class="badge">+{{messagesCounter+96}}</span>
+        <span class="badge" *ngIf="messagesCounter>0">+{{messagesCounter}}</span>
       </div>
     </nb-action> 
     <ng-template #templateMessagelRef>
@@ -144,19 +137,20 @@
         <span class="badge">{{notifsCounter}}</span>
       </div>
     </nb-action>
+
     <ng-template #templateNotifsRef let-ref="notifRef">
         <nb-card accent="info" >
           <nb-card-header>
             <span class="font-weight-bold">Notifications</span><span class="link"><a (click)="GoTo('notifications');">See all</a></span></nb-card-header>
             <!--parcours les notification en affichant notification.user.picture with notification.text and notification.date -->
             <nb-card-body class="padding0">
-              <nb-list>
-                <nb-list-item class="list-item-hovered" *ngFor="let u of users.slice(0, 10) ">
+              <nb-list *ngIf="users">
+                <nb-list-item class="list-item-hovered" *ngFor="let u of users.slice(0, 10) | orderBy : 'lastCnx' : true ">
                   <nb-user [name]="u.fullname" [picture]="u.avatar" 
-                   size="large" [badgeText]="'N'" [badgeStatus]="'primary'" [badgePosition]="'bottom right'"onlyPicture></nb-user>
+                   size="large" [badgeText]="' '" [badgeStatus]="'primary'" [badgePosition]="'top left'"onlyPicture></nb-user>
                   <span style="width: 70%;">
                     <span > <a class="font-weight-bold link"  (click)="GoTo('profile/'+u.username)">{{u.fullname}} </a> liked your picture blabla bla blala balala. </span>
-                    <span class="text-secondary" style="margin-top: 3px;  display: block;"> 2 days ago </span>
+                    <span class="text-secondary" style="margin-top: 3px;  display: block;"> {{u.lastCnx | timeAgo}} </span>
                   </span>
                   <span >
                     <table width="100%" height="100%" style="margin: 0 auto;" valign="center">
@@ -186,7 +180,7 @@
     <nb-action class="medium-control-item " *nbIsGranted="['view', 'user']" >
       <div class="icon-wrapper-user">
         <nb-user *ngIf="currentUser" [size]="'large'" [nbContextMenu]="userMenu" [onlyPicture]="userPictureOnly" [name]="currentUser.fullname"
-          [title]="'@'+currentUser.username" shape="semi-round" [picture]="currentUser.avatar">
+          [title]="'@'+currentUser.username" shape="semi-round" [picture]="currentUser.avatar || '../../../assets/images/default-profile.png'">
         </nb-user>
         <nb-user *ngIf="!currentUser" [size]="'large'" [name]="" picture="../../../../assets/images/Anonymous.jpg" >
         </nb-user>

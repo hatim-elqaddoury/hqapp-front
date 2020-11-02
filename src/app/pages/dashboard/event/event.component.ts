@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../../@core/utils';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthenticationService } from '../../../@core/utils/authentication.service';
+import { CryptoService } from '../../../@core/utils/crypto.service';
 
 @Component({
   selector: 'hq-event',
@@ -14,7 +15,11 @@ export class EventComponent implements OnInit {
   subActiveUsers:any;
   getActiveUsersInterval:any;
 
-  constructor(private authS: AuthenticationService, private router: Router) {
+  constructor(
+    private authS: AuthenticationService, 
+    private router: Router,
+    private cryptoS: CryptoService,
+    ) {
     this.getActiveUser();
   }
 
@@ -26,7 +31,9 @@ export class EventComponent implements OnInit {
   private getActiveUser(){
     this.subActiveUsers = this.authS.getActiveUsers().subscribe(
     res => {
-      this.activeUsers = res;
+      this.activeUsers = this.cryptoS.decrypt(res["encrypted"]);
+      console.log("active users ", this.activeUsers);
+      
     }, () => {
       clearInterval(this.getActiveUsersInterval);
     });

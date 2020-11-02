@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { api } from '../mock/conf';
 import { NetworkService } from './network.service';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -42,21 +41,24 @@ export class AuthenticationService {
 
 
   public getActiveUsers() {
-    return this.http.get(this.host + "getActiveUsers", { headers: { 'HQ-authorise': this.getToken() } });
+    return (this.getToken())? this.http.get(this.host + "getActiveUsers", { headers: { 'HQ-authorise': this.getToken() } }) :null;
   }
 
   public logout(url: string) {
-    let res: any = this.http.post(this.host + "logout/?authorisationHeader=" + this.getToken(), { headers: { 'HQ-authorise': this.getToken() } });
+    let res: any = (this.getToken()) ? this.http.post(this.host + "logout/?authorisationHeader=" + this.getToken(), {headers: {'HQ-authorise': this.getToken()}}).subscribe() : null;
+    //let res: any = this.http.post(this.host + "logout/?authorisationHeader=" + this.getToken(), { headers: { 'HQ-authorise': this.getToken() } }).subscribe();
     this.provide.clear();
-    this.router.navigateByUrl(url);
-    this.authService.logout("email").subscribe();
+    this.router.navigateByUrl(url); 
     return res;
   }
 
-
   public getConnected() {
-      return this.http.get(this.host + "connected/?authorisationHeader=" + this.getToken(), { headers: { 'HQ-authorise': this.getToken() } });
+    return (this.getToken()) ?this.http.get(this.host + "connected/?authorisationHeader=" + this.getToken(), { headers: { 'HQ-authorise': this.getToken() } }) :null;
   }
 
+  public loginGoogle(obj:any){
+    return this.http.post(this.host + "singInGoogle/", obj)
+    
+  }
 
 }

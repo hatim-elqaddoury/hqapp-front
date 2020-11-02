@@ -10,7 +10,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es2015",
-    "typeRoots": [
+    "typeRoots": [ 
       "node_modules/@types"
     ],
     "lib": [

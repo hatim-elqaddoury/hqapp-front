@@ -38,6 +38,9 @@
   }
 
   nb-user{
+    .user-picture {
+      background-color: nb-theme(background-basic-color-2);
+    }
    nb-badge{
         border-radius: 100px;
         font-family: Open Sans, sans-serif;
@@ -54,6 +57,7 @@
 
   nb-user.size-#{'xgiant'} {
     .user-picture {
+      background-color: nb-theme(background-basic-color-2);
       height: 500px!important;
       width:  500px!important;
     }

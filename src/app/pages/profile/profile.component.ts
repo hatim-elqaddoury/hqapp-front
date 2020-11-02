@@ -1,26 +1,28 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { AdminService } from '../../@core/utils';
 import { filter } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { title } from '../../@core/mock/conf';
+import { CryptoService } from '../../@core/utils/crypto.service';
 
 @Component({
   selector: 'hq-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
 
   private selectedFile: File;
-  user: any;
+  private user: any;
   private subUsers: any;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router, 
+    private router: Router,
     private adminS: AdminService,
+    private cryptoS: CryptoService,
     private titleService: Title) {
     //Gets the idUSer from the url paramaeters.
 
@@ -37,15 +39,15 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
    // console.log(this.user);
-    
   }
 
   //Gets the the user to show its profile.
   getUser(id: String):any{
     if (!id) this.user = "notfound";
-    else this.subUsers =this.adminS.getUser(id).subscribe(
+    else this.subUsers = this.adminS.getUser(id).subscribe(
     (res:any) => {
-      this.user = res;
+        this.user = this.cryptoS.decrypt(res["encrypted"]);
+        
       if (!this.user) this.user = "notfound";
       else this.titleService.setTitle(this.user.fullname + "・" + title.value);
       return this.user;
@@ -64,7 +66,7 @@ export class ProfileComponent implements OnInit {
   }
 
   //Gets called when the user clicks on submit to upload the image
-  onUpload() {
+  public onUpload(): any {
     console.log(this.selectedFile);
     const uploadImageData = new FormData();
     uploadImageData.append('imageFile', this.selectedFile, this.user.idUser);
@@ -74,7 +76,6 @@ export class ProfileComponent implements OnInit {
     });
 
   }
-
 
   //Gets called when the user clicks on retieve image button to get the image from back end
   /*getImage() {
@@ -91,8 +92,6 @@ export class ProfileComponent implements OnInit {
 
 
   ngOnDestroy() {
-    console.log(title.value);
-    
     this.titleService.setTitle(title.value);
     this.subUsers.unsubscribe();
     
