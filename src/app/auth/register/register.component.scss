@@ -1,13 +1,9 @@
 @import '../../@theme/styles/themes';
 
 @include nb-install-component() {
-<<<<<<< Updated upstream
-
-=======
     .error-message{
         color: nb-theme( color-danger-500);
     }
->>>>>>> Stashed changes
 
 
 }

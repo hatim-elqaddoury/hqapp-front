@@ -2,9 +2,9 @@
 
 @include nb-install-component() {
     
-    //button:disabled{
-        //background-color: grey !important;
-        //opacity: .3 !important;
-    //}
+    .error-message{
+        color: nb-theme( color-danger-500);
+    }
+
 
 }

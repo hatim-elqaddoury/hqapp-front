@@ -11,7 +11,8 @@ const routes: Routes = [
   },
   {
     path: 'auth',
-    loadChildren: './auth/auth.module#HQAuthModule',
+    loadChildren: () =>import('./auth/auth.module')
+    .then(m => m.HQAuthModule),
   },
   {
     path: '',
