@@ -36,19 +36,12 @@
       </div>
     </nb-action>
 
-
-    <nb-action class="small-control-item" (click)="toggleOnlineUsersBar();"
-      nbTooltip="Online users" nbTooltipPlacement="bottom">
-      <div class="icon-wrapper">
-        <nb-icon icon="people-outline" [options]="{ animation: { type: 'pulse' } }"></nb-icon>
-      </div>
-    </nb-action>
-
     <nb-action class="small-control-item" (click)="openD(dialogUserMenu)">
-      <div class="icon-wrapper-user" *ngIf="currentUser" [nbTooltip]="currentUser.fullname" nbTooltipPlacement="bottom" >
-        <nb-user [onlyPicture]="userPictureOnly" [name]="currentUser.fullname" title="currentUser.role"
+      <div class="icon-wrapper-user" [nbTooltip]="currentUser.fullname" nbTooltipPlacement="bottom" >
+        <nb-user *ngIf="currentUser" [size]="'medium'" [onlyPicture]="userPictureOnly" [name]="currentUser.fullname" title="currentUser.role"
           shape="semi-round" [picture]="currentUser.avatar || '../../../assets/images/default-profile.png'">
         </nb-user>
+        <nb-user *ngIf="!currentUser" [size]="'medium'" [name]="" picture="../../../../assets/images/Anonymous.jpg"></nb-user>
       </div>
     </nb-action>
     
@@ -144,6 +137,7 @@
         <span class="badge">{{notifsCounter}}</span>
       </div>
     </nb-action>
+
     <ng-template #templateNotifsRef let-ref="notifRef">
         <nb-card accent="info" >
           <nb-card-header>

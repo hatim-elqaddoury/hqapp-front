@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NbGlobalPosition, NbToastrConfig, NbToastrService } from '@nebular/theme';
 import { AdminService } from '../../../@core/utils';
 import { AuthenticationService } from '../../../@core/utils/authentication.service';
 import { CryptoService } from '../../../@core/utils/crypto.service';
@@ -15,9 +16,10 @@ export class AccountComponent implements OnInit , OnDestroy{
   private subVerif: any;
 
   constructor(
-    private adminS: AdminService,
-    private authS: AuthenticationService,
-    private cryptoS: CryptoService,
+    protected adminS: AdminService,
+    protected authS: AuthenticationService,
+    protected cryptoS: CryptoService,
+    protected toastrS: NbToastrService,
   ) { 
   }
 
@@ -41,9 +43,38 @@ export class AccountComponent implements OnInit , OnDestroy{
 
   public verifyMail(): any {
     this.getConnected();
-    console.log(this.user);
+    if (!this.user.mailVerified) {
+      this.subVerif=this.adminS.verifyEmail(this.user.idUser).subscribe(
+        (res)=>{
+          this.showToast(
+            'Information',
+            res["encrypted"],
+            'info', 'bottom-right', 'email-outline');
+          
+        },(err)=>{
+          this.showToast(
+            'Email is not sent',
+            err.error["encrypted"],
+            'danger', 'bottom-right', 'email-outline');
+        }
+
+      );
     
-    if (!this.user.mailVerified) this.subVerif=this.adminS.verifyEmail(this.user.idUser).subscribe(); 
+        
+    }
+    
+  }
+
+  showToast(title:string, content:string, status, position, icon) {
+
+    let _defaultConfig: Partial<NbToastrConfig> = {
+      position, duration: 9000, destroyByClick: true, status, hasIcon: true, icon, iconPack: 'eva'
+    }
+
+    this.toastrS.show(
+      content,
+      title,
+      _defaultConfig);
   }
 
   ngOnDestroy(): void {

@@ -33,7 +33,7 @@
 
                 <nb-user class="awayStatus" [picture]="u.avatar || '../../../assets/images/default-profile.png'"
                     [name]="u.fullname" [size]="'large'" [badgeText]="(u.lastCnx | timeAgoShort)?'':' '" [title]="u.lastCnx | timeAgo"
-                    [badgeStatus]="(u.lastCnx | timeAgoShort)?'danger':'success'" badgePosition="bottom right">
+                    [badgeStatus]="u.lastCnx==null || (u.lastCnx | timeAgoShort)?'danger':'success'" badgePosition="bottom right">
                 </nb-user>
 
 

@@ -4,9 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router'; 
 import { api } from '../@core/mock/conf';
 
+import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
+import { GoogleLoginProvider, FacebookLoginProvider } from "angularx-social-login";
 
 import { HQAuthRoutingModule } from './auth-routing.module';
-import { NbAuthModule, NbPasswordAuthStrategy, NbAuthJWTToken } from '@nebular/auth';
+import { NbAuthModule, NbPasswordAuthStrategy, NbAuthJWTToken, NbOAuth2AuthStrategy, NbOAuth2ResponseType } from '@nebular/auth';
 import {
     NbAlertModule,
     NbButtonModule,
@@ -27,6 +29,14 @@ const formSetting: any = {
     },
 };
 
+const google_oauth_client_id: string = "74354586769-4gsp4h49oc4o6o3okofjmv3tdjbhd9ln.apps.googleusercontent.com";
+
+let configs = new AuthServiceConfig([
+    {
+        id: GoogleLoginProvider.PROVIDER_ID,
+        provider: new GoogleLoginProvider(google_oauth_client_id)
+    }
+])
 
 @NgModule({
     imports: [
@@ -40,6 +50,7 @@ const formSetting: any = {
         NbIconModule,
         NbCardModule,
         HQAuthRoutingModule,
+        SocialLoginModule.initialize(configs),
 
         NbAuthModule.forRoot({
             strategies: [
@@ -97,7 +108,9 @@ const formSetting: any = {
         // ... here goes our new components
         LoginComponent,
         RegisterComponent,
-        RegisterTermsComponent
+        RegisterTermsComponent,
+    ],
+    providers: [
     ],
 })
 export class HQAuthModule {

@@ -56,5 +56,9 @@ export class AuthenticationService {
     return (this.getToken()) ?this.http.get(this.host + "connected/?authorisationHeader=" + this.getToken(), { headers: { 'HQ-authorise': this.getToken() } }) :null;
   }
 
+  public loginGoogle(obj:any){
+    return this.http.post(this.host + "singInGoogle/", obj)
+    
+  }
 
 }

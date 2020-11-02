@@ -49,7 +49,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.user = this.cryptoS.decrypt(res["encrypted"]);
         
       if (!this.user) this.user = "notfound";
-      else this.titleService.setTitle(this.user.username + "・" + title.value);
+      else this.titleService.setTitle(this.user.fullname + "・" + title.value);
       return this.user;
     }, 
     (err:any)=>{
@@ -92,8 +92,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    console.log(title.value);
-    
     this.titleService.setTitle(title.value);
     this.subUsers.unsubscribe();
     

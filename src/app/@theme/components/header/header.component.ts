@@ -140,8 +140,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (this.currentUser) {
         this.currentTheme = this.dbTheme = this.currentUser.theme;
         //  a revoir la date
-        this.currentUser.lastCnx = new Date(this.currentUser.lastCnx);
-        this.currentUser.joinedDate = new Date(this.currentUser.joinedDate);
+        //this.currentUser.lastCnx = new Date(this.currentUser.lastCnx);
+        //this.currentUser.joinedDate = new Date(this.currentUser.joinedDate);
         if (this.currentTheme == 'dark') {
           this.changeTheme('dark');
         } else if (this.currentTheme == 'default') {
